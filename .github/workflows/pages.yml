@@ -26,9 +26,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+      # No setup-node step: the runner already has Node 20 (the updater needs 18+),
+      # and this project has no dependencies, so there is nothing to install or cache.
+      - name: Show Node version
+        run: node --version
 
       # If a source is down the updater keeps the previous values for that part.
       # If it fails outright we still deploy the data that is already in the repo.
