@@ -1,0 +1,12 @@
+{
+  "name": "glitch-ls",
+  "version": "2.0.0",
+  "private": true,
+  "description": "GTA Online glitches, money methods and a money planner that updates itself.",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start": "node server.mjs",
+    "update": "node updater/update.mjs"
+  }
+}

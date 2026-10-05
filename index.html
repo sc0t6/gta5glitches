@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glitch//LS: GTA Online Glitches &amp; Money</title>
+  <meta name="description" content="Auto-updating GTA Online money methods, money glitches, fun glitches, cheats and a money planner.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>$</text></svg>">
+</head>
+<body>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a href="#top" class="logo" aria-label="Glitch//LS home">GLITCH<span>//</span>LS</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#planner">Planner</a>
+      <a href="#methods">Money Methods</a>
+      <a href="#money-glitches">Money Glitches</a>
+      <a href="#fun-glitches">Fun Glitches</a>
+      <a href="#rp">RP Glitches</a>
+      <a href="#weekly">This Week</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#story">Story Mode</a>
+      <a href="#cheats">Cheats</a>
+      <a href="#secrets">Secrets</a>
+      <a href="#safety">Ban Safety</a>
+    </nav>
+    <button class="live-pill" id="live-pill" type="button" aria-haspopup="dialog" title="Auto-updater status">
+      <span class="live-dot" aria-hidden="true"></span><span id="live-pill-text">Checking…</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-sun" aria-hidden="true"></div>
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="eyebrow"><span class="dot"></span> <span id="hero-status">Loading…</span></p>
+        <h1 class="glitch" data-text="GLITCH//LS">GLITCH//LS</h1>
+        <p class="hero-sub">Working GTA Online money glitches, the fastest legit grinds, fun glitches, cheats and secrets, with a planner that works out how to reach the cash you need. It updates itself every week.</p>
+        <div class="hero-cta">
+          <a href="#planner" class="btn btn-primary">Plan my money →</a>
+          <a href="#money-glitches" class="btn btn-ghost">See money glitches</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b id="stat-methods">0</b><span>money methods</span></div>
+          <div class="stat"><b id="stat-glitches">0</b><span>glitches tracked</span></div>
+          <div class="stat"><b id="stat-cheats">0</b><span>cheat codes</span></div>
+          <div class="stat countdown"><b id="gta6-count">--</b><span id="gta6-label">days until GTA VI</span></div>
+        </div>
+      </div>
+      <a href="#weekly" class="ticker" aria-label="This week's bonuses">
+        <div class="ticker-track" id="ticker"></div>
+      </a>
+    </section>
+
+    <!-- PLANNER -->
+    <section id="planner" class="section">
+      <div class="section-head">
+        <p class="kicker">01 · Money Planner</p>
+        <h2>How much do you need?</h2>
+        <p class="lead">Drag the slider to your goal and tap the properties you own. The planner builds the quickest legit route and fits other jobs into each cooldown.</p>
+      </div>
+
+      <div class="planner">
+        <div class="panel planner-controls">
+          <label class="label" for="money-slider">Target amount</label>
+          <div class="target-display">
+            <span class="currency">$</span><input id="money-input" class="money-input" inputmode="numeric" aria-label="Target amount in GTA dollars">
+          </div>
+          <input type="range" id="money-slider" min="0" max="1000" step="1" aria-label="Target amount slider">
+          <div class="slider-scale" aria-hidden="true"></div>
+
+          <p class="label">Saving for…</p>
+          <div class="chips" id="presets"></div>
+
+          <p class="label">Properties I own</p>
+          <div class="chips" id="owned"></div>
+
+          <label class="switch">
+            <input type="checkbox" id="passive-toggle" checked>
+            <span class="switch-ui"></span>
+            Count passive business income while I play
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="bonus-toggle" checked>
+            <span class="switch-ui"></span>
+            I haven't done this week's first-run bonuses yet
+          </label>
+        </div>
+
+        <div class="panel planner-result" aria-live="polite">
+          <div class="result-head">
+            <div>
+              <p class="label">Fastest route</p>
+              <p class="result-time" id="route-time">—</p>
+              <p class="result-sub" id="route-sub"></p>
+            </div>
+            <div class="result-badge" id="route-badge"></div>
+          </div>
+          <ol class="route" id="route"></ol>
+
+          <p class="label mt">Single method only: time to reach your goal</p>
+          <div class="ranking" id="ranking"></div>
+          <p class="fine">Times are active play for a practiced solo player. Cooldowns are counted. Payouts are community estimates and change with weekly bonuses.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- METHODS -->
+    <section id="methods" class="section">
+      <div class="section-head">
+        <p class="kicker">02 · Legit Money Methods</p>
+        <h2>The best grinds right now</h2>
+        <p class="lead">Payouts are refreshed by the auto-updater from after the July 2026 economy pass. No ban risk. <b>Tap any card for a step-by-step guide.</b></p>
+      </div>
+      <div class="filter-row">
+        <div class="tabs" id="method-tabs" role="group" aria-label="Filter methods">
+          <button class="tab active" data-filter="all">All</button>
+          <button class="tab" data-filter="heist">Heists</button>
+          <button class="tab" data-filter="contract">Contracts &amp; jobs</button>
+          <button class="tab" data-filter="free">No property needed</button>
+          <button class="tab" data-filter="passive">Passive / AFK</button>
+        </div>
+        <div class="controls">
+          <select id="method-sort" class="select" aria-label="Sort methods">
+            <option value="default">Recommended order</option>
+            <option value="payout">Highest payout</option>
+            <option value="hourly">Best $ per hour (cooldown included)</option>
+            <option value="setup">Cheapest to start</option>
+          </select>
+          <input type="search" id="method-search" class="search" placeholder="Search methods…" aria-label="Search money methods">
+        </div>
+      </div>
+      <p class="count" id="method-count" aria-live="polite"></p>
+      <div class="grid cards" id="method-grid"></div>
+
+      <h3 class="sub-h">Tricks that feel like glitches (but aren't)</h3>
+      <div class="grid tricks" id="tricks"></div>
+    </section>
+
+    <!-- MONEY GLITCHES -->
+    <section id="money-glitches" class="section">
+      <div class="section-head">
+        <p class="kicker">03 · Money Glitches</p>
+        <h2>Glitches that print cash</h2>
+        <p class="lead">Status is checked against the community working list by the auto-updater. <b>Tap a card for the overview and a link to the live guide.</b></p>
+      </div>
+      <div class="warning">
+        <strong>⚠ Read first:</strong> Rockstar bans for exploits and wipes money it thinks you made illegitimately. Try these on a second account, space out your car sales, and never use paid "money drops" or mod menus.
+      </div>
+      <div class="filter-row">
+        <div class="tabs" id="mg-platform" role="group" aria-label="Filter by platform">
+          <button class="tab active" data-filter="all">All platforms</button>
+          <button class="tab" data-filter="PS">PlayStation</button>
+          <button class="tab" data-filter="Xbox">Xbox</button>
+          <button class="tab" data-filter="PC">PC</button>
+        </div>
+        <div class="tabs" id="mg-players" role="group" aria-label="Filter by player count">
+          <button class="tab active" data-filter="all">Any</button>
+          <button class="tab" data-filter="Solo">Solo only</button>
+          <button class="tab" data-filter="new">🆕 New</button>
+        </div>
+        <input type="search" id="mg-search" class="search" placeholder="Search money glitches…" aria-label="Search money glitches">
+      </div>
+      <p class="count" id="mg-count" aria-live="polite"></p>
+      <div class="grid cards" id="money-glitch-grid"></div>
+      <p class="fine" id="patched-note" hidden></p>
+    </section>
+
+    <!-- FUN GLITCHES -->
+    <section id="fun-glitches" class="section">
+      <div class="section-head">
+        <p class="kicker">04 · Fun Glitches</p>
+        <h2>Break the game (for fun)</h2>
+        <p class="lead">Invisible jets, walking in the sky, banned outfit combos. None of these make money, so the risk is low. The list grows automatically from the community working list.</p>
+      </div>
+      <div class="filter-row">
+        <div class="tabs" id="fun-tabs" role="group" aria-label="Filter by category">
+          <button class="tab active" data-filter="all">All</button>
+          <button class="tab" data-filter="vehicle">🚗 Vehicle</button>
+          <button class="tab" data-filter="player">🕴 Player</button>
+          <button class="tab" data-filter="outfit">🧥 Outfit</button>
+          <button class="tab" data-filter="world">🌆 World &amp; misc</button>
+        </div>
+        <div class="tabs" id="fun-platform" role="group" aria-label="Filter by platform">
+          <button class="tab active" data-filter="all">All platforms</button>
+          <button class="tab" data-filter="PS">PlayStation</button>
+          <button class="tab" data-filter="Xbox">Xbox</button>
+          <button class="tab" data-filter="PC">PC</button>
+        </div>
+        <input type="search" id="fun-search" class="search" placeholder="Search glitches…" aria-label="Search fun glitches">
+      </div>
+      <p class="count" id="fun-count" aria-live="polite"></p>
+      <div class="grid mini" id="fun-grid"></div>
+      <div class="more-row"><button class="btn btn-ghost" id="fun-more" type="button" hidden>Show more</button></div>
+    </section>
+
+    <!-- RP -->
+    <section id="rp" class="section">
+      <div class="section-head">
+        <p class="kicker">05 · RP &amp; Rank Glitches</p>
+        <h2>Level up overnight</h2>
+        <p class="lead">Rank unlocks weapons, upgrades and more jobs. These are the lowest-risk glitches because they don't add cash.</p>
+      </div>
+      <div class="filter-row">
+        <div class="tabs" id="rp-platform" role="group" aria-label="Filter by platform">
+          <button class="tab active" data-filter="all">All platforms</button>
+          <button class="tab" data-filter="PS">PlayStation</button>
+          <button class="tab" data-filter="Xbox">Xbox</button>
+          <button class="tab" data-filter="PC">PC</button>
+        </div>
+        <div class="tabs" id="rp-players" role="group" aria-label="Filter by player count">
+          <button class="tab active" data-filter="all">Any</button>
+          <button class="tab" data-filter="Solo">Solo only</button>
+          <button class="tab" data-filter="new">🆕 New</button>
+        </div>
+        <input type="search" id="rp-search" class="search" placeholder="Search RP glitches…" aria-label="Search RP glitches">
+      </div>
+      <p class="count" id="rp-count" aria-live="polite"></p>
+      <div class="grid cards" id="rp-grid"></div>
+    </section>
+
+    <!-- WEEKLY -->
+    <section id="weekly" class="section">
+      <div class="section-head">
+        <p class="kicker">06 · This Week in GTA Online</p>
+        <h2 id="weekly-title"></h2>
+        <p class="lead"><span id="weekly-range"></span> · <span id="weekly-countdown-wrap">Resets in <b id="weekly-countdown">—</b></span></p>
+      </div>
+      <div class="weekly">
+        <div class="panel">
+          <p class="label">Bonus payouts</p>
+          <ul class="bonus-list" id="weekly-bonuses"></ul>
+        </div>
+        <div class="panel">
+          <p class="label">Free money &amp; rewards</p>
+          <ul class="check-list" id="weekly-rewards"></ul>
+          <div class="podium">
+            <div><span class="label">Podium car</span><b id="podium"></b></div>
+            <div><span class="label">Prize Ride</span><b id="prize"></b></div>
+          </div>
+        </div>
+        <div class="panel">
+          <p class="label">Sales</p>
+          <ul class="check-list sale" id="weekly-sales"></ul>
+        </div>
+      </div>
+      <div class="extras" id="weekly-extras"></div>
+    </section>
+
+    <!-- CHECKLIST -->
+    <section id="checklist" class="section">
+      <div class="section-head">
+        <p class="kicker">07 · Grind Checklist</p>
+        <h2>Don't leave money on the table</h2>
+        <p class="lead">Tick things off as you go. Daily items reset each day and weekly items reset every Thursday. Progress is saved in this browser.</p>
+      </div>
+      <div class="checklists">
+        <div class="panel">
+          <div class="cl-head"><p class="label">Daily</p><span class="cl-progress" id="daily-progress"></span></div>
+          <ul class="todo" id="daily-list"></ul>
+        </div>
+        <div class="panel">
+          <div class="cl-head"><p class="label">Weekly (resets Thursday)</p><span class="cl-progress" id="weekly-progress"></span></div>
+          <ul class="todo" id="weekly-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORY -->
+    <section id="story" class="section">
+      <div class="section-head">
+        <p class="kicker">08 · Story Mode Money</p>
+        <h2>Lester's stock market trick</h2>
+        <p class="lead">The best legit way to get billions in Story Mode. Hold off on Lester's assassination missions until after <b>The Big Score</b>, then put every character's money into these stocks.</p>
+      </div>
+      <div class="panel table-wrap">
+        <table class="stocks">
+          <thead><tr><th>Mission</th><th>Invest before</th><th>Invest after</th><th>Typical gain</th></tr></thead>
+          <tbody id="stock-rows"></tbody>
+        </table>
+      </div>
+      <ol class="steps">
+        <li>Finish <b>The Big Score</b> first. It pays out tens of millions to each character.</li>
+        <li>Before each mission, put all of Michael's, Franklin's and Trevor's money into the "before" stock.</li>
+        <li>Finish the mission, quick-save, and sleep or skip days until the stock peaks. Sell, then buy the "after" stock and wait for it to peak.</li>
+        <li>Make a separate save before each mission so you can reload if you miss a peak. Done well, each character ends up with about $2B.</li>
+      </ol>
+    </section>
+
+    <!-- CHEATS -->
+    <section id="cheats" class="section">
+      <div class="section-head">
+        <p class="kicker">09 · Story Mode Cheats</p>
+        <h2>Cheat codes</h2>
+        <p class="lead">Story Mode only. Cheats disable trophies and achievements until you reload a save. <span id="cheat-note"></span></p>
+      </div>
+      <div class="filter-row">
+        <div class="tabs" id="cheat-platform" role="group" aria-label="Platform">
+          <button class="tab active" data-filter="ps">PlayStation</button>
+          <button class="tab" data-filter="xbox">Xbox</button>
+          <button class="tab" data-filter="pc">PC (type ~)</button>
+          <button class="tab" data-filter="phone">Phone</button>
+        </div>
+        <div class="tabs" id="cheat-group" role="group" aria-label="Category">
+          <button class="tab active" data-filter="all">All</button>
+          <button class="tab" data-filter="player">Player</button>
+          <button class="tab" data-filter="combat">Combat</button>
+          <button class="tab" data-filter="world">World</button>
+          <button class="tab" data-filter="vehicle">Vehicles</button>
+        </div>
+        <input type="search" id="cheat-search" class="search" placeholder="Search cheats…" aria-label="Search cheats">
+      </div>
+      <div class="grid cheats" id="cheat-grid"></div>
+    </section>
+
+    <!-- SECRETS -->
+    <section id="secrets" class="section">
+      <div class="section-head">
+        <p class="kicker">10 · Easter Eggs &amp; Secrets</p>
+        <h2>Things most players never see</h2>
+      </div>
+      <div class="grid mini" id="egg-grid"></div>
+    </section>
+
+    <!-- SAFETY -->
+    <section id="safety" class="section">
+      <div class="section-head">
+        <p class="kicker">11 · Ban Safety</p>
+        <h2>How not to get wiped</h2>
+      </div>
+      <div class="grid safety">
+        <div class="panel"><h3>🧾 Space out big sales</h3><p>Rockstar flags sudden jumps in money. Don't sell several expensive duped cars back to back, and keep it to a few a day.</p></div>
+        <div class="panel"><h3>🧪 Use a second account</h3><p>Test new glitches on a throwaway character or account first, and keep your main clean.</p></div>
+        <div class="panel"><h3>🚫 No mod menus or "money drops"</h3><p>Paid recovery services and modded lobbies are the #1 cause of bans. Anti-cheat on PC catches injectors fast.</p></div>
+        <div class="panel"><h3>🔒 Invite-only sessions</h3><p>Do glitches in private sessions so nobody can report or record you.</p></div>
+        <div class="panel"><h3>📉 Spend it, don't hoard it</h3><p>Money spent on properties and cars is less likely to be wiped than a giant bank balance.</p></div>
+        <div class="panel"><h3>🕹 Mix in legit runs</h3><p>An account that also runs heists and contracts looks normal. Pure glitch income doesn't.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p class="logo">GLITCH<span>//</span>LS</p>
+    <p>Fan-made guide. Not affiliated with Rockstar Games or Take-Two Interactive. Use glitches at your own risk.</p>
+    <p class="fine" id="footer-status"></p>
+    <p class="fine">Sources: <a href="https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts" target="_blank" rel="noopener">GTABase</a> ·
+      <a href="https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online" target="_blank" rel="noopener">GTA Boss</a> ·
+      <a href="https://gtaglitches.com/working-glitches" target="_blank" rel="noopener">GTAGlitches / r/GTAGlitches</a></p>
+  </footer>
+
+  <!-- Guide / tutorial popup -->
+  <dialog class="modal" id="guide" aria-labelledby="guide-title">
+    <div class="modal-card">
+      <button class="modal-close" id="guide-close" type="button" aria-label="Close guide">✕</button>
+      <div id="guide-body"></div>
+    </div>
+  </dialog>
+
+  <!-- Auto-updater status popup -->
+  <dialog class="modal" id="update-dialog" aria-labelledby="update-title">
+    <div class="modal-card">
+      <button class="modal-close" id="update-close" type="button" aria-label="Close">✕</button>
+      <div id="update-body"></div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="data.js"></script>
+  <script src="cheats.js"></script>
+  <script src="data/live.js" onerror="void 0"></script>
+  <script src="app.js"></script>
+</body>
+</html>

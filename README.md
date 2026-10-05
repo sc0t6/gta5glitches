@@ -1,0 +1,74 @@
+# GLITCH//LS
+
+GTA Online money methods, money glitches, fun glitches, cheats and a money planner. It updates itself.
+
+## Put it on GitHub Pages
+
+1. Create a new GitHub repository and push this folder to its `main` branch:
+
+   ```bash
+   git init -b main
+   git add .
+   git commit -m "GLITCH//LS"
+   git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
+   git push -u origin main
+   ```
+
+2. In the repo, go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+3. Open the **Actions** tab. The "Update data and deploy to GitHub Pages" workflow runs on the first push.
+   If it doesn't, click it, then **Run workflow**. When it finishes, your site is at
+   `https://YOUR-USERNAME.github.io/YOUR-REPO/`.
+
+After that it runs by itself (`.github/workflows/pages.yml`): every 3 hours, and again right after each Thursday
+weekly reset. Each run re-scrapes the sources, commits the refreshed `data/` files, and redeploys.
+If **Settings → Actions → General → Workflow permissions** is set to read-only, switch it to read and write so
+the run can commit the data.
+
+Notes:
+- The site only needs the files the workflow copies (`index.html`, `styles.css`, `app.js`, `data.js`,
+  `cheats.js` and `data/live.*`). `server.mjs` and `updater/` are not published.
+- The Live button on the published site reloads the latest published data. It can't force a new scrape (only the
+  local server can); trigger **Run workflow** in the Actions tab for that.
+- GitHub pauses scheduled workflows after 60 days without repo activity. The data commits keep it active.
+- If a source blocks GitHub's servers, that part keeps its previous values and the run logs a warning.
+
+## Run it locally
+
+```bash
+npm start
+```
+
+Then open http://localhost:5173. No dependencies are needed (Node 18+).
+
+`npm start` serves the site **and** runs the auto-updater:
+
+- It refreshes the data when it is older than 3 hours (`UPDATE_EVERY_HOURS`), and again right after each
+  weekly reset (the new Thursday event appears by itself).
+- The **Live** button in the top bar shows the last check, the sources, and what changed. "Check for updates now"
+  forces a re-scrape.
+
+To update without the server, run `npm run update`. It rewrites `data/live.json` and `data/live.js`, which the
+page reads.
+
+## What updates automatically
+
+| Source | What it refreshes |
+| --- | --- |
+| GTABase weekly update | This week's event, bonuses, discounts, podium, rewards, Kortz targets, Salvage Yard robberies. Event multipliers and one-off bonuses are applied to the matching money methods and the planner. |
+| GTA Boss money guide | Payouts, first-run-of-the-week values, buy-in prices and passive income rates (checked against the shipped values, with sanity limits). |
+| r/GTAGlitches working list | The full community glitch list, marked NEW when added and "likely patched" when removed. Curated money-glitch statuses are checked against it. |
+
+If a source is down or changes its layout, that part keeps its previous values and a warning shows in the Live dialog.
+
+## What is hand-written
+
+The tutorials, tips and ban-risk ratings in `data.js` are reviewed by hand (last review: Oct 5, 2026). Exploit
+steps are deliberately not printed: they break with every patch, so each glitch links to the maintained community
+guide instead. Cheat codes are in `cheats.js`.
+
+## Files
+
+- `index.html`, `styles.css`, `app.js`: the site
+- `data.js`: curated content and fallbacks; `cheats.js`: cheat codes
+- `updater/update.mjs`: scrapes the sources and writes `data/live.json` / `data/live.js`
+- `server.mjs`: static server + scheduler + `/api/status` and `POST /api/update`
