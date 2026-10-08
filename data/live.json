@@ -1,14 +1,14 @@
 {
  "schema": 1,
- "generatedAt": "2026-10-07T20:36:48.404Z",
+ "generatedAt": "2026-10-08T00:59:21.081Z",
  "weekly": {
-  "title": "Halloween in Los Santos",
-  "range": "October 1 – 7, 2026",
-  "ends": "2026-10-08T09:00:00.000Z",
+  "title": "Second Week of Halloween Event",
+  "range": "October 8 – 14, 2026",
+  "ends": "2026-10-15T09:00:00.000Z",
   "bonuses": [
    {
     "mult": "3×",
-    "text": "GTA$ & RP on Slasher"
+    "text": "GTA$ & RP on Hotring Circuit / San Andreas Super Sport Series"
    },
    {
     "mult": "3×",
@@ -21,6 +21,10 @@
    {
     "mult": "3×",
     "text": "GTA$ & RP on Community Race Series"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on The Black Box File"
    },
    {
     "mult": "2×",
@@ -44,73 +48,52 @@
    }
   ],
   "rewards": [
-   "Get the Cheerleader Massacre 3 T-Shirt for free through October 7 (must be claimed from in-game clothing stores)",
-   "Complete five Security Contracts through October 7 to receive $500,000 within 72 hours of completion",
-   "Complete all Weekly Challenges through November 4 to receive $2,000,000 within 72 hours of completion",
-   "Secure two Bail Office Bounties to get the Green Vintage Skull Mask and $100,000",
+   "Win 2 Adversary Modes to receive the Pink Skull Emissive Mask and $100,000",
    "Gun Van: free Baseball Bat, The Shocker"
   ],
-  "podium": "Cinquemila",
-  "prizeRide": "Dominator GTT",
+  "podium": "Savestra",
+  "prizeRide": "Walton L35 (Lifted)",
   "sales": [
    "40% off: Brigham, Fränken Stange, Lurcher, Tornado Rat Rod, Sanctus, all Agency locations",
-   "30% off: Schlagen GT, Vigero ZX, Brioso 300, Komoda, Buzzard Attack Chopper, Ultralight, Ardent, Sparrow, Powersurge"
+   "30% off: Remus, Terrorbyte, Club, Greenwood, Jester RR, ETR1, Itali GTO, Hotring Everon, Tempesta, SC1"
   ],
   "extras": [
    {
-    "title": "Halloween Season",
-    "items": [
-     "Returning Events: Slashers, Clone Slasher, Phantom Car, Cerberus Surprise, Possessed Animals, Ghosts Exposed, Jack O'Lanterns, Peyote Plants",
-     "Clothing and Accessories: Halloween Masks, Face Paints, Horns, Bobbleheads & Casino Decorations"
-    ]
-   },
-   {
     "title": "Kortz Center Heist Primary Targets",
     "items": [
-     "Chat on Fruit",
-     "Juiced",
-     "The Downfall of Rome"
+     "Pumpkin",
+     "A Winding Road Home",
+     "Winter, Nowhere in Particular"
     ]
    },
    {
     "title": "Salvage Yard Robberies",
     "items": [
-     "The Cargo Ship Robbery: Buffalo EVX (Top Tier)",
-     "The McTony Robbery: Everon (Standard Tier)",
-     "The Duggan Robbery: Fränken Stange (Standard Tier)"
+     "The McTony Robbery: Growler (Top Tier)",
+     "The Gangbanger Robbery: Fränken Stange (Standard Tier)",
+     "The Podium Robbery: Eudora (Low Tier)"
     ]
    },
    {
     "title": "Premium Race & Trials",
     "items": [
-     "Premium Race: Arms Race",
-     "Time Trial: Maze Bank Arena",
-     "HSW Time Trial: Ron Alternates to Elysian Island"
+     "Premium Race: The Commute",
+     "Time Trial: Terminal to Chiliad Mountain State Wilderness",
+     "HSW Time Trial: Tongva Valley"
     ]
    }
   ],
   "methodEvents": {
    "bail": {
     "x": 2,
-    "label": "2× this week (ends Oct 7)"
+    "label": "2× this week (ends Oct 14)"
    },
    "dispatch": {
     "x": 2,
-    "label": "2× this week (ends Oct 7)"
+    "label": "2× this week (ends Oct 14)"
    }
   },
-  "methodBonuses": {
-   "security": {
-    "runs": 5,
-    "amount": 500000,
-    "label": "$500,000 bonus after 5 (ends Oct 7)"
-   },
-   "bail": {
-    "runs": 2,
-    "amount": 100000,
-    "label": "$100,000 bonus after 2 (ends Oct 7)"
-   }
-  },
+  "methodBonuses": {},
   "sourceUrl": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts"
  },
  "methodOverrides": {},
@@ -3044,8 +3027,17 @@
   }
  ],
  "patched": [],
- "history": [],
- "changes": [],
+ "history": [
+  {
+   "at": "2026-10-08T00:59:21.081Z",
+   "changes": [
+    "This week: Second Week of Halloween Event (October 8 – 14, 2026)"
+   ]
+  }
+ ],
+ "changes": [
+  "This week: Second Week of Halloween Event (October 8 – 14, 2026)"
+ ],
  "warnings": [],
  "sources": [
   {
@@ -3053,23 +3045,23 @@
    "name": "GTABase weekly update",
    "url": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
    "ok": true,
-   "checkedAt": "2026-10-07T20:36:48.404Z"
+   "checkedAt": "2026-10-08T00:59:21.081Z"
   },
   {
    "id": "guide",
    "name": "GTA Boss solo money guide",
    "url": "https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online",
    "ok": true,
-   "checkedAt": "2026-10-07T20:36:48.404Z"
+   "checkedAt": "2026-10-08T00:59:21.081Z"
   },
   {
    "id": "hub",
    "name": "r/GTAGlitches working list",
    "url": "https://gtaglitches.com/working-glitches",
    "ok": true,
-   "checkedAt": "2026-10-07T20:36:48.404Z"
+   "checkedAt": "2026-10-08T00:59:21.081Z"
   }
  ],
  "ok": true,
- "contentHash": "33c3a000c94c"
+ "contentHash": "c4a2a5343399"
 }
