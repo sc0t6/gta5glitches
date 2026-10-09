@@ -31,30 +31,48 @@ jobs:
       - name: Show Node version
         run: node --version
 
-      # If a source is down the updater keeps the previous values for that part.
-      # If it fails outright we still deploy the data that is already in the repo.
-      - name: Refresh data from the sources
-        run: node updater/update.mjs || echo "::warning::Updater failed, deploying existing data"
-
-      - name: Commit refreshed data
+      # Generated data (live.js, live.json, state.json) lives on its own 'data' branch, so it
+      # can never conflict with the commits you make to main.
+      - name: Load saved data from the data branch
         run: |
+          mkdir -p data
+          if git fetch --depth=1 origin data; then
+            git worktree add -B data _databranch FETCH_HEAD
+            if [ -d _databranch/data ]; then cp -r _databranch/data/. data/; fi
+          else
+            echo "No data branch yet, starting fresh"
+            git worktree add --detach _databranch
+            git -C _databranch checkout --orphan data
+            git -C _databranch rm -rf --quiet . || true
+          fi
+
+      # If a source is down the updater keeps the previous values for that part.
+      # If it fails outright we still deploy the data we already have.
+      - name: Refresh data from the sources
+        run: node updater/update.mjs || echo "::warning::Updater failed, deploying the data we already have"
+
+      - name: Save data to the data branch
+        run: |
+          mkdir -p _databranch/data
+          for f in live.js live.json state.json; do
+            if [ -f "data/$f" ]; then cp "data/$f" "_databranch/data/$f"; fi
+          done
+          cd _databranch
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data
+          git add -A
           if git diff --cached --quiet; then
             echo "No data changes"
           else
             git commit -m "chore: refresh live data"
-            git pull --rebase origin "${{ github.ref_name }}"
-            git push origin "HEAD:${{ github.ref_name }}"
+            git push origin HEAD:data
           fi
 
       - name: Build the site folder
         run: |
-          mkdir _site
+          mkdir -p _site/data
           cp index.html styles.css app.js data.js cheats.js _site/
-          mkdir _site/data
-          cp data/live.js data/live.json _site/data/
+          cp data/live.js data/live.json _site/data/ || echo "::warning::No live data yet, deploying the built-in copy"
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5

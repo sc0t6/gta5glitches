@@ -20,17 +20,36 @@ GTA Online money methods, money glitches, fun glitches, cheats and a money plann
    `https://YOUR-USERNAME.github.io/YOUR-REPO/`.
 
 After that it runs by itself (`.github/workflows/pages.yml`): every 3 hours, and again right after each Thursday
-weekly reset. Each run re-scrapes the sources, commits the refreshed `data/` files, and redeploys.
-If **Settings → Actions → General → Workflow permissions** is set to read-only, switch it to read and write so
-the run can commit the data.
+weekly reset. Each run restores the saved data, re-scrapes the sources, saves the result, and redeploys.
+
+**Where the generated data lives:** `data/live.js`, `data/live.json` and `data/state.json` are kept on a separate
+`data` branch that the Action creates and updates. They are never committed to `main` (they're in `.gitignore`), so
+your own commits can't conflict with the Action's. Locally, `npm start` and `npm run update` regenerate them for you.
+
+If **Settings → Actions → General → Workflow permissions** is read-only, switch it to read and write so the run can
+save the data branch.
 
 Notes:
-- The site only needs the files the workflow copies (`index.html`, `styles.css`, `app.js`, `data.js`,
-  `cheats.js` and `data/live.*`). `server.mjs` and `updater/` are not published.
+- The site only needs the files the workflow copies (`index.html`, `styles.css`, `app.js`, `data.js`, `cheats.js`
+  and `data/live.*`). `server.mjs` and `updater/` are not published.
 - The Live button on the published site reloads the latest published data. It can't force a new scrape (only the
   local server can); trigger **Run workflow** in the Actions tab for that.
-- GitHub pauses scheduled workflows after 60 days without repo activity. The data commits keep it active.
+- GitHub pauses scheduled workflows after 60 days without repo activity. The data-branch commits keep it active.
 - If a source blocks GitHub's servers, that part keeps its previous values and the run logs a warning.
+
+### If you ever see a conflict in `data/live.js` or `data/live.json`
+
+That means those files are being tracked on `main` again. They're generated, so either version is fine. Keep the
+incoming one, then stop tracking them:
+
+```bash
+git checkout --theirs -- data/live.js data/live.json   # add data/state.json if Git lists it as conflicted
+git add data
+git commit -m "Merge remote data"
+git rm --cached data/live.js data/live.json data/state.json
+git commit -m "Stop tracking generated data"
+git push
+```
 
 ## Run it locally
 
