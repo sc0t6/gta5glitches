@@ -1,0 +1,894 @@
+{
+ "initializedAt": "2026-10-05T15:30:25.830Z",
+ "glitches": {
+  "beff": {
+   "name": "BEFF",
+   "first": null
+  },
+  "arena-rp-glitch": {
+   "name": "Arena RP Glitch",
+   "first": null
+  },
+  "5k-rp-every-30-secs": {
+   "name": "5k RP Every 30 Secs",
+   "first": null
+  },
+  "dr-dre-linux-replay-glitch": {
+   "name": "Dr Dre Linux Replay Glitch",
+   "first": null
+  },
+  "agency-replay-glitch": {
+   "name": "Agency Replay Glitch",
+   "first": null
+  },
+  "solo-car-dupe": {
+   "name": "Solo Car Dupe",
+   "first": null
+  },
+  "solo-car-dupe-glitch-and-unlimited-mule-custom-glitch": {
+   "name": "Solo Car Dupe Glitch and Unlimited Mule Custom Glitch",
+   "first": null
+  },
+  "ps5-next-dns-beff": {
+   "name": "PS5 Next DNS BEFF",
+   "first": null
+  },
+  "clean-car-dupe": {
+   "name": "Clean Car Dupe",
+   "first": null
+  },
+  "semi-frozen-money-new-gen-workaround": {
+   "name": "Semi frozen Money New Gen Workaround",
+   "first": null
+  },
+  "sentinel-xs-unlimited-car-dupe": {
+   "name": "Sentinel XS Unlimited Car Dupe",
+   "first": null
+  },
+  "solo-facility-dupe-workaround": {
+   "name": "Solo Facility Dupe Workaround",
+   "first": null
+  },
+  "semi-solo-bike-dupe": {
+   "name": "Semi Solo Bike Dupe",
+   "first": null
+  },
+  "dre-contract-finale-skip": {
+   "name": "Dre Contract finale skip",
+   "first": null
+  },
+  "easy-money-glitch-for-new-players-v2": {
+   "name": "Easy Money Glitch For New Players V2",
+   "first": null
+  },
+  "semi-frozen-money-glitch": {
+   "name": "Semi Frozen Money Glitch",
+   "first": null
+  },
+  "semi-frozen-money-glitch-no-sw-htos": {
+   "name": "Semi Frozen Money Glitch (NO SW / HTOS)",
+   "first": null
+  },
+  "give-money-to-friends-v2": {
+   "name": "Give Money To Friends v2",
+   "first": null
+  },
+  "mass-arena-dupe": {
+   "name": "Mass Arena Dupe",
+   "first": null
+  },
+  "bunker-hangar-solo-dupe": {
+   "name": "Bunker/Hangar Solo Dupe",
+   "first": null
+  },
+  "solo-bunker-moc-dupe": {
+   "name": "Solo Bunker/MOC Dupe",
+   "first": null
+  },
+  "tessera-replacement-for-crest-companion-tool-no-save-job-warp-fingerprin": {
+   "name": "Tessera Replacement For Crest Companion Tool ( No Save, Job Warp, Fingerprint helper )",
+   "first": null
+  },
+  "no-save-heist-replay-new-workaround": {
+   "name": "No Save Heist Replay New Workaround",
+   "first": null
+  },
+  "solo-replay-money-glitch": {
+   "name": "Solo Replay Money Glitch",
+   "first": null
+  },
+  "gta-5-no-save-tool-ahk-v2": {
+   "name": "GTA 5 No Save Tool AHK V2",
+   "first": null
+  },
+  "solo-replay-money-glitch-v2": {
+   "name": "Solo Replay Money Glitch V2",
+   "first": null
+  },
+  "invisible-while-on-the-mk2": {
+   "name": "Invisible While On the MK2",
+   "first": null
+  },
+  "give-aa-trailer-to-friends": {
+   "name": "Give AA Trailer to Friends",
+   "first": null
+  },
+  "infinite-toreador-boost": {
+   "name": "Infinite Toreador Boost",
+   "first": null
+  },
+  "vehicle-speed-glitch": {
+   "name": "Vehicle Speed Glitch",
+   "first": null
+  },
+  "spawn-vehicles-instantly-without-cooldown": {
+   "name": "Spawn Vehicles Instantly Without Cooldown",
+   "first": null
+  },
+  "dmo-lite": {
+   "name": "DMO Lite",
+   "first": null
+  },
+  "infinitely-spawn-vehicles": {
+   "name": "Infinitely Spawn Vehicles",
+   "first": null
+  },
+  "dmo-car-drop": {
+   "name": "DMO Car Drop",
+   "first": null
+  },
+  "car-2-car-special-vehicle-merge": {
+   "name": "Car 2 Car/Special Vehicle Merge",
+   "first": null
+  },
+  "brickade-merge": {
+   "name": "Brickade Merge",
+   "first": null
+  },
+  "drive-invisible-vehicle": {
+   "name": "Drive Invisible Vehicle",
+   "first": null
+  },
+  "bf-weevil-speed-glitch": {
+   "name": "BF Weevil Speed Glitch",
+   "first": null
+  },
+  "moc-solo-merge": {
+   "name": "MOC Solo Merge",
+   "first": null
+  },
+  "colored-stock-wheels": {
+   "name": "Colored Stock Wheels",
+   "first": null
+  },
+  "chameleon-pearlescent-glitch": {
+   "name": "Chameleon Pearlescent Glitch",
+   "first": null
+  },
+  "lscm-car-to-car-merge": {
+   "name": "LSCM Car to Car Merge",
+   "first": null
+  },
+  "invisible-aircraft": {
+   "name": "Invisible Aircraft",
+   "first": null
+  },
+  "matte-pearlescent-respray": {
+   "name": "Matte Pearlescent Respray",
+   "first": null
+  },
+  "save-park-ranger-vehicle": {
+   "name": "Save Park Ranger Vehicle",
+   "first": null
+  },
+  "change-the-inductor-bike-color": {
+   "name": "Change the Inductor Bike Color",
+   "first": null
+  },
+  "terrorbyte-merge": {
+   "name": "Terrorbyte Merge",
+   "first": null
+  },
+  "invisible-car-no-cops-glitch": {
+   "name": "Invisible Car + No Cops Glitch",
+   "first": null
+  },
+  "facility-gctf-back-2-back": {
+   "name": "Facility GCTF Back 2 Back",
+   "first": null
+  },
+  "special-license-plates": {
+   "name": "Special License Plates",
+   "first": null
+  },
+  "save-bf-dune-buggy": {
+   "name": "Save BF Dune Buggy",
+   "first": null
+  },
+  "multi-dmo-car-dropping-for-new-gen": {
+   "name": "Multi DMO Car Dropping For New Gen",
+   "first": null
+  },
+  "change-plates-on-cop-cars": {
+   "name": "Change Plates on Cop Cars",
+   "first": null
+  },
+  "invisible-planes-choppers": {
+   "name": "Invisible Planes & Choppers",
+   "first": null
+  },
+  "director-mode-glitch-in-gtaonline-v2": {
+   "name": "Director Mode Glitch in GTAOnline V2",
+   "first": null
+  },
+  "drive-inside-lscm": {
+   "name": "Drive Inside LSCM",
+   "first": null
+  },
+  "spawn-lazer-jet-in-titan-job-finale": {
+   "name": "Spawn Lazer Jet in Titan Job Finale",
+   "first": null
+  },
+  "drive-inside-the-arena-workshop": {
+   "name": "Drive Inside The Arena Workshop",
+   "first": null
+  },
+  "vehicle-god-mode": {
+   "name": "Vehicle God Mode",
+   "first": null
+  },
+  "bring-selected-colors-into-gta-unchecked-in-the-save-editor": {
+   "name": "Bring Selected Colors into GTA+ Unchecked in the Save Editor",
+   "first": null
+  },
+  "give-moc-aa-trailer-to-friends": {
+   "name": "Give MOC & AA Trailer To Friends",
+   "first": null
+  },
+  "give-modded-avenger-to-friends": {
+   "name": "Give Modded Avenger to Friends",
+   "first": null
+  },
+  "thruster-on-cayo-perico-island": {
+   "name": "Thruster on Cayo Perico Island",
+   "first": null
+  },
+  "drive-destroyed-vehicles": {
+   "name": "Drive Destroyed Vehicles",
+   "first": null
+  },
+  "intangible-jet-glitch-new-workaround": {
+   "name": "Intangible Jet Glitch New Workaround",
+   "first": null
+  },
+  "spawn-any-vehicles-in-god-mode-glitch": {
+   "name": "Spawn Any Vehicles in God Mode Glitch",
+   "first": null
+  },
+  "unlimited-missiles-for-oppressor-mk2-deluxo-more": {
+   "name": "Unlimited Missiles For Oppressor MK2/Deluxo & More",
+   "first": null
+  },
+  "clean-interiors-with-magic-slot": {
+   "name": "Clean interiors with Magic Slot",
+   "first": null
+  },
+  "give-terrorbyte-avenger-to-friends": {
+   "name": "Give Terrorbyte/Avenger to Friends",
+   "first": null
+  },
+  "invisible-car-glitch": {
+   "name": "Invisible Car Glitch",
+   "first": null
+  },
+  "dmo-trailer-invisible-workaround": {
+   "name": "DMO Trailer Invisible Workaround",
+   "first": null
+  },
+  "fly-with-invisible-mk2": {
+   "name": "Fly with invisible MK2",
+   "first": null
+  },
+  "aircraft-thermal-exploit": {
+   "name": "Aircraft Thermal Exploit",
+   "first": null
+  },
+  "magic-slot-flip-glitch": {
+   "name": "Magic Slot Flip Glitch",
+   "first": null
+  },
+  "vehicle-god-mode-updated-versions": {
+   "name": "Vehicle God Mode Updated Versions",
+   "first": null
+  },
+  "facility-vehicle-god-mode": {
+   "name": "Facility Vehicle God Mode",
+   "first": null
+  },
+  "use-vigilante-or-any-personal-vehicle-in-auto-shop-contract": {
+   "name": "Use Vigilante or any personal vehicle in Auto Shop Contract",
+   "first": null
+  },
+  "god-mode-planes-choppers": {
+   "name": "God Mode Planes & Choppers",
+   "first": null
+  },
+  "car-to-car-merge-dupe-glitch": {
+   "name": "Car to Car Merge / Dupe Glitch",
+   "first": null
+  },
+  "dmo-cmo-story-characters-in-online-jobs": {
+   "name": "DMO, CMO & Story Characters in Online Jobs",
+   "first": null
+  },
+  "infinite-jet-respawn-glitch": {
+   "name": "Infinite Jet Respawn Glitch",
+   "first": null
+  },
+  "director-mode-online-car-drop-glitch": {
+   "name": "Director Mode Online Car Drop Glitch",
+   "first": null
+  },
+  "after-patch-car-2-car-merge-dupe-glitch": {
+   "name": "After Patch Car 2 Car Merge + Dupe Glitch",
+   "first": null
+  },
+  "moc-gctf-buy-almost-anything-right-d-pad-anywhere-avenger-workaround": {
+   "name": "MOC GCTF + Buy Almost Anything + Right D-Pad Anywhere Avenger Workaround",
+   "first": null
+  },
+  "moc-gctf-buy-almost-anything-acid-lab-workaround": {
+   "name": "MOC GCTF + Buy Almost Anything Acid Lab Workaround",
+   "first": null
+  },
+  "fly-through-the-air-glitch": {
+   "name": "Fly Through The Air Glitch",
+   "first": null
+  },
+  "thermals-in-aircraft": {
+   "name": "Thermals in Aircraft",
+   "first": null
+  },
+  "kill-god-mode-players": {
+   "name": "Kill God Mode Players",
+   "first": null
+  },
+  "complete-tier-3-survival-headshot-challenge": {
+   "name": "Complete Tier 3 Survival Headshot Challenge",
+   "first": null
+  },
+  "shooting-range-glitch": {
+   "name": "Shooting Range Glitch",
+   "first": null
+  },
+  "never-fall-off-bike-arena": {
+   "name": "Never Fall Off Bike (Arena)",
+   "first": null
+  },
+  "god-mode-car-glitch": {
+   "name": "God Mode Car Glitch",
+   "first": null
+  },
+  "shipping-container-launch-glitch": {
+   "name": "Shipping Container Launch Glitch",
+   "first": null
+  },
+  "no-wanted-level": {
+   "name": "No Wanted Level",
+   "first": null
+  },
+  "ramp-buggy-launch-glitch": {
+   "name": "Ramp Buggy Launch Glitch",
+   "first": null
+  },
+  "bmx-launch": {
+   "name": "BMX Launch",
+   "first": null
+  },
+  "vehicle-warehouse-otr": {
+   "name": "Vehicle Warehouse OTR",
+   "first": null
+  },
+  "bushole-launch": {
+   "name": "Bushole Launch",
+   "first": null
+  },
+  "extra-consumables": {
+   "name": "Extra Consumables",
+   "first": null
+  },
+  "out-of-bounds": {
+   "name": "Out of Bounds",
+   "first": null
+  },
+  "launch-glitch": {
+   "name": "Launch Glitch",
+   "first": null
+  },
+  "walk-in-the-sky": {
+   "name": "Walk in the Sky",
+   "first": null
+  },
+  "merge-teleport-jobs": {
+   "name": "Merge/Teleport Jobs",
+   "first": null
+  },
+  "2-boys-1-hole": {
+   "name": "2 Boys, 1 Hole",
+   "first": null
+  },
+  "teleport-inside-of-ufo": {
+   "name": "Teleport Inside of UFO",
+   "first": null
+  },
+  "apartment-gm": {
+   "name": "Apartment GM",
+   "first": null
+  },
+  "minigun-revolver": {
+   "name": "Minigun Revolver",
+   "first": null
+  },
+  "guns-in-passive-mode-v3-workaround": {
+   "name": "Guns in passive Mode V3 Workaround",
+   "first": null
+  },
+  "stash-house-otr": {
+   "name": "Stash House OTR",
+   "first": null
+  },
+  "cocaine-factory-music-locker-otr": {
+   "name": "Cocaine Factory & Music Locker OTR",
+   "first": null
+  },
+  "weed-farm-otr-glitch-out": {
+   "name": "Weed Farm OTR Glitch Out",
+   "first": null
+  },
+  "terrorbyte-otr-glitch-out": {
+   "name": "Terrorbyte OTR Glitch Out",
+   "first": null
+  },
+  "terrorbyte-otr-new-spot-workaround": {
+   "name": "Terrorbyte OTR New Spot Workaround",
+   "first": null
+  },
+  "on-off-new-god-mode-glitch": {
+   "name": "ON/OFF New God Mode Glitch",
+   "first": null
+  },
+  "on-off-god-mode-v2": {
+   "name": "ON/OFF God Mode V2",
+   "first": null
+  },
+  "dm-actor-or-animal-to-online": {
+   "name": "DM actor or animal to online",
+   "first": null
+  },
+  "stay-drunk-forever": {
+   "name": "Stay Drunk Forever",
+   "first": null
+  },
+  "solo-boat-under-map": {
+   "name": "Solo Boat under map",
+   "first": null
+  },
+  "guns-in-passive-mode-v2-workaround": {
+   "name": "Guns in passive mode V2 Workaround",
+   "first": null
+  },
+  "kill-players-in-cayo-beach-party": {
+   "name": "Kill Players in Cayo Beach Party",
+   "first": null
+  },
+  "radio-on-foot": {
+   "name": "Radio on Foot",
+   "first": null
+  },
+  "job-warping-during-missions": {
+   "name": "Job Warping During Missions",
+   "first": null
+  },
+  "solo-easy-drone-teleporting": {
+   "name": "Solo & Easy Drone Teleporting",
+   "first": null
+  },
+  "caddy-solo-god-mode-glitch": {
+   "name": "Caddy Solo God Mode Glitch",
+   "first": null
+  },
+  "penthouse-god-mode-glitch": {
+   "name": "Penthouse God Mode Glitch",
+   "first": null
+  },
+  "use-throwables-while-in-passive-mode": {
+   "name": "Use Throwables While in Passive Mode",
+   "first": null
+  },
+  "force-friendly-fire-off-on-anyone": {
+   "name": "Force Friendly Fire OFF On Anyone",
+   "first": null
+  },
+  "quickiepharm-bobcat-security-gruppe-sechs-solo-god-mode-new-workaround": {
+   "name": "QuickiePharm/Bobcat Security/Gruppe Sechs Solo God Mode New Workaround",
+   "first": null
+  },
+  "guns-in-passive-mode-v4-workaround": {
+   "name": "Guns in Passive Mode V4 Workaround",
+   "first": null
+  },
+  "nightclub-terrorbyte-otr": {
+   "name": "Nightclub TerrorByte OTR",
+   "first": null
+  },
+  "no-ragdoll-glitch-new-workaround": {
+   "name": "No Ragdoll Glitch New Workaround",
+   "first": null
+  },
+  "guns-in-passive-mode": {
+   "name": "Guns in Passive Mode",
+   "first": null
+  },
+  "crash-players-game-in-a-public-session": {
+   "name": "Crash Players Game in a public Session",
+   "first": null
+  },
+  "agency-no-ragdoll": {
+   "name": "Agency No Ragdoll",
+   "first": null
+  },
+  "casino-god-mode-and-otr": {
+   "name": "Casino God Mode and OTR",
+   "first": null
+  },
+  "avenger-god-mode-without-anawack": {
+   "name": "Avenger God Mode Without Anawack",
+   "first": null
+  },
+  "forklift-otr": {
+   "name": "Forklift OTR",
+   "first": null
+  },
+  "passive-mode-with-weapons-updated-workaround": {
+   "name": "Passive Mode with weapons Updated Workaround",
+   "first": null
+  },
+  "facility-godmode-otr-no-cops-invisible": {
+   "name": "Facility GodMode/OTR/No Cops/Invisible",
+   "first": null
+  },
+  "acid-lab-otr-god-mode": {
+   "name": "Acid Lab OTR + God Mode",
+   "first": null
+  },
+  "guns-in-passive-mode-v5-workaround": {
+   "name": "Guns in Passive Mode V5 Workaround",
+   "first": null
+  },
+  "casino-penthouse-god-mode": {
+   "name": "Casino Penthouse God Mode",
+   "first": null
+  },
+  "rc-bandito-invisible-weapons": {
+   "name": "RC Bandito Invisible + Weapons",
+   "first": null
+  },
+  "no-collision-and-fly-through-buildings-and-undermap": {
+   "name": "No Collision and Fly Through Buildings and Undermap",
+   "first": null
+  },
+  "change-aim-type-in-session": {
+   "name": "Change Aim Type in Session",
+   "first": null
+  },
+  "overcoat-and-suit-vest": {
+   "name": "Overcoat and Suit Vest",
+   "first": null
+  },
+  "unlock-love-fist-shortsleeve": {
+   "name": "Unlock Love Fist Shortsleeve",
+   "first": null
+  },
+  "wear-any-blacklisted-outfit": {
+   "name": "Wear Any Blacklisted Outfit",
+   "first": null
+  },
+  "ballistic-snacks-with-snacks-armor": {
+   "name": "Ballistic Snacks with Snacks & Armor",
+   "first": null
+  },
+  "transfer-coloured-chutes-duffle-bags": {
+   "name": "Transfer Coloured Chutes Duffle Bags",
+   "first": null
+  },
+  "jet-black-duffle": {
+   "name": "Jet Black Duffle",
+   "first": null
+  },
+  "outfit-jobs-workaround": {
+   "name": "Outfit Jobs Workaround",
+   "first": null
+  },
+  "halloween-biker-jacket": {
+   "name": "Halloween Biker Jacket",
+   "first": null
+  },
+  "white-duffle": {
+   "name": "White Duffle",
+   "first": null
+  },
+  "female-joggers-outfit-transfer": {
+   "name": "Female Joggers/Outfit Transfer",
+   "first": null
+  },
+  "outfit-transfer": {
+   "name": "Outfit Transfer",
+   "first": null
+  },
+  "remove-bodysuit-logo": {
+   "name": "Remove Bodysuit Logo",
+   "first": null
+  },
+  "iaa-badge": {
+   "name": "IAA Badge",
+   "first": null
+  },
+  "save-the-half-hat": {
+   "name": "Save The Half Hat",
+   "first": null
+  },
+  "invisible-arms-on-cop-outfit": {
+   "name": "Invisible Arms on Cop Outfit",
+   "first": null
+  },
+  "any-shoes-with-gorka-pants": {
+   "name": "Any Shoes with Gorka Pants",
+   "first": null
+  },
+  "fib-necklace": {
+   "name": "FIB Necklace",
+   "first": null
+  },
+  "modded-outfits-no-checkerboard": {
+   "name": "Modded Outfits (No Checkerboard)",
+   "first": null
+  },
+  "gorka-joggers-with-iaa-belt-and-invisible-torso": {
+   "name": "Gorka Joggers with IAA Belt and Invisible Torso",
+   "first": null
+  },
+  "frontier-outfit-in-1-day": {
+   "name": "Frontier Outfit in 1 Day",
+   "first": null
+  },
+  "save-ceo-outfits": {
+   "name": "Save CEO Outfits",
+   "first": null
+  },
+  "invisible-arms": {
+   "name": "Invisible Arms",
+   "first": null
+  },
+  "ceo-mc-joggers-outfits": {
+   "name": "CEO/MC Joggers & Outfits",
+   "first": null
+  },
+  "unlock-high-flyer-parachute": {
+   "name": "Unlock High Flyer Parachute",
+   "first": null
+  },
+  "save-orange-green-trash-vest": {
+   "name": "Save Orange/Green Trash Vest",
+   "first": null
+  },
+  "unlock-a-new-unreleased-suit-jacket": {
+   "name": "Unlock A New Unreleased Suit Jacket",
+   "first": null
+  },
+  "hat-mask-merge-glitch-new-workaround": {
+   "name": "Hat & Mask Merge Glitch New Workaround",
+   "first": null
+  },
+  "merge-mask-to-helmet-glasses": {
+   "name": "Merge Mask to Helmet & Glasses",
+   "first": null
+  },
+  "glitched-bodysuit-outfit": {
+   "name": "Glitched Bodysuit Outfit",
+   "first": null
+  },
+  "bandana-and-glasses-without-hat": {
+   "name": "Bandana and glasses without hat",
+   "first": null
+  },
+  "unlock-hidden-manor-surano-jacket": {
+   "name": "Unlock Hidden Manor Surano Jacket",
+   "first": null
+  },
+  "remove-logos-from-clothing-tops": {
+   "name": "Remove Logos From Clothing Tops",
+   "first": null
+  },
+  "unlock-the-skull-face-paint": {
+   "name": "Unlock the Skull Face Paint",
+   "first": null
+  },
+  "santa-hat-from-gooch-outfit": {
+   "name": "Santa Hat from Gooch outfit",
+   "first": null
+  },
+  "new-mask-merge-glitch-workaround": {
+   "name": "New mask merge glitch workaround",
+   "first": null
+  },
+  "mansion-duffle-bag-transfer": {
+   "name": "Mansion Duffle Bag Transfer",
+   "first": null
+  },
+  "get-duffle-bags-and-save-them": {
+   "name": "Get Duffle Bags and Save Them",
+   "first": null
+  },
+  "solo-black-joggers-without-moc-or-jobs": {
+   "name": "Solo Black Joggers without MOC Or Jobs",
+   "first": null
+  },
+  "shoes-merge-glitch": {
+   "name": "Shoes Merge Glitch",
+   "first": null
+  },
+  "merge-masks-to-glasses-helmets": {
+   "name": "Merge Masks To Glasses & Helmets",
+   "first": null
+  },
+  "colored-parachute-bag": {
+   "name": "Colored Parachute Bag",
+   "first": null
+  },
+  "solo-flip-blue-biker-helmet-to-white": {
+   "name": "Solo Flip Blue Biker Helmet To White",
+   "first": null
+  },
+  "colored-duffle-bags": {
+   "name": "Colored Duffle Bags",
+   "first": null
+  },
+  "mansion-mask-merge": {
+   "name": "Mansion Mask Merge",
+   "first": null
+  },
+  "outfit-transfer-updated": {
+   "name": "Outfit Transfer Updated",
+   "first": null
+  },
+  "solo-tan-joggers-without-jobs": {
+   "name": "Solo Tan Joggers Without Jobs",
+   "first": null
+  },
+  "candy-cane-weapon": {
+   "name": "Candy Cane Weapon",
+   "first": null
+  },
+  "skywalker": {
+   "name": "Skywalker",
+   "first": null
+  },
+  "how-to-get-out-of-badsport-instantly": {
+   "name": "How to Get Out of BADSPORT Instantly",
+   "first": null
+  },
+  "thermal-in-story-mode": {
+   "name": "Thermal in Story Mode",
+   "first": null
+  },
+  "teleport-in-lscm": {
+   "name": "Teleport in LSCM",
+   "first": null
+  },
+  "get-inside-luxury-autos": {
+   "name": "Get Inside Luxury Autos",
+   "first": null
+  },
+  "machine-revolver": {
+   "name": "Machine Revolver",
+   "first": null
+  },
+  "unlock-trevor-at-beginning-of-game": {
+   "name": "Unlock Trevor at Beginning of Game",
+   "first": null
+  },
+  "unlock-shocker-early": {
+   "name": "Unlock Shocker Early",
+   "first": null
+  },
+  "old-casino-story-map-online": {
+   "name": "Old Casino/Story Map Online",
+   "first": null
+  },
+  "tsunami-glitch": {
+   "name": "Tsunami Glitch",
+   "first": null
+  },
+  "npc-bone-jiggling": {
+   "name": "NPC Bone Jiggling",
+   "first": null
+  },
+  "salvage-yard-ls-panic-teleport": {
+   "name": "Salvage Yard LS Panic Teleport",
+   "first": null
+  },
+  "unlimited-afk-solo-rp-exploit": {
+   "name": "Unlimited AFK Solo RP Exploit",
+   "first": null
+  },
+  "all-afk-exploits-after-money-fronts-dlc": {
+   "name": "All AFK Exploits After Money Fronts DLC",
+   "first": null
+  },
+  "rockstar-verified-slots-glitch": {
+   "name": "Rockstar Verified Slots Glitch",
+   "first": null
+  },
+  "method-to-spam-rockets": {
+   "name": "Method To Spam Rockets",
+   "first": null
+  },
+  "creator-mode-online-glitch": {
+   "name": "Creator Mode Online Glitch",
+   "first": null
+  },
+  "throwables-in-rc-bandito": {
+   "name": "Throwables in RC Bandito",
+   "first": null
+  },
+  "how-to-spawn-kosatka-anywhere": {
+   "name": "How to spawn Kosatka Anywhere",
+   "first": null
+  },
+  "get-unlimited-ammo-for-free": {
+   "name": "Get Unlimited Ammo For Free",
+   "first": null
+  },
+  "in-session-targeting-mode-switch": {
+   "name": "In-session targeting mode switch",
+   "first": null
+  },
+  "snowballs-glitch": {
+   "name": "Snowballs glitch",
+   "first": null
+  },
+  "cayo-perico-gather-intel-undetected-glitch": {
+   "name": "Cayo Perico Gather intel Undetected Glitch",
+   "first": null
+  },
+  "lock-ceo-mc-missions-in-session-glitch": {
+   "name": "Lock CEO/MC Missions in Session Glitch",
+   "first": null
+  },
+  "bring-back-snow-online": {
+   "name": "Bring Back Snow online",
+   "first": null
+  },
+  "rockstar-editor-online": {
+   "name": "Rockstar Editor Online",
+   "first": null
+  },
+  "all-afk-exploits-after-a-safehouse-in-the-hills-update": {
+   "name": "All AFK Exploits After A Safehouse in the hills update",
+   "first": null
+  },
+  "creator-mode-online-updated-method": {
+   "name": "Creator Mode Online Updated Method",
+   "first": null
+  }
+ },
+ "patched": [],
+ "history": [
+  {
+   "at": "2026-10-09T17:12:00.794Z",
+   "changes": [
+    "This week: Second Week of Halloween Event (October 8 – 14, 2026)"
+   ]
+  }
+ ]
+}
