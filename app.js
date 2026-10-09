@@ -97,6 +97,33 @@
     DB.methods.forEach((m) => DB.reg.set("method:" + m.id, { ...m, kind: "method", key: "method:" + m.id }));
     DB.passive.forEach((p) => DB.reg.set("passive:" + p.id, { ...p, kind: "passive", key: "passive:" + p.id }));
 
+    // Businesses hub: rates come from the live method/passive figures so they stay in sync with the updater.
+    const rateOf = (keys) => {
+      let rate = 0, disputed = false;
+      for (const key of keys || []) {
+        const [type, id] = key.split(":");
+        const src = type === "method" ? DB.methods.find((x) => x.id === id) : DB.passive.find((x) => x.id === id);
+        if (!src) continue;
+        if (src.contested) disputed = true;
+        rate += type === "method" ? (src.weeklyLimit ? 0 : loopRate(src)) : src.perHour;
+      }
+      return { rate, disputed };
+    };
+    DB.businesses = BUSINESSES.map((b) => {
+      const prop = DB.properties.find((p) => p.id === (b.id === "mansion" ? "studio" : b.id));
+      const cost = prop ? prop.cost : b.cost;
+      const bz = { ...b, group: b.kind, kind: "business", key: "business:" + b.id, cost, ...rateOf(b.rateFrom) };
+      bz.hay = norm([b.name, b.why, b.income, b.verdict, b.pairs].join(" "));
+      return bz;
+    });
+    DB.activities = FUN_ACTIVITIES.map((a) => {
+      const az = { ...a, kind: "activity", key: "activity:" + a.id, re: a.match ? new RegExp(a.match, "i") : null };
+      az.hay = norm([a.name, a.why, a.money, a.rp, a.players, (a.tags || []).join(" ")].join(" "));
+      return az;
+    });
+    DB.businesses.forEach((b) => DB.reg.set(b.key, b));
+    DB.activities.forEach((a) => DB.reg.set(a.key, a));
+
     buildGlitches(L);
   }
 
@@ -481,6 +508,8 @@
   const matchPlatform = (it, plat) => plat === "all" || it.platforms.includes(plat);
 
   const view = {
+    biz: { group: "all", sort: "default", q: "" },
+    fz: { tab: "all", q: "" },
     methods: { type: "all", sort: "default", q: "" },
     money: { plat: "all", players: "all", q: "" },
     rp: { plat: "all", players: "all", q: "" },
@@ -620,6 +649,14 @@
   }
 
   function initFilters() {
+    bindTabs("#biz-tabs", (f) => { view.biz.group = f; renderBiz(); });
+    $("#biz-sort").addEventListener("change", (e) => { view.biz.sort = e.target.value; renderBiz(); });
+    $("#biz-search").addEventListener("input", (e) => { view.biz.q = e.target.value; renderBiz(); });
+    bindTabs("#fz-tabs", (f) => { view.fz.tab = f; renderFunZone(); });
+    $("#fz-search").addEventListener("input", (e) => { view.fz.q = e.target.value; renderFunZone(); });
+    for (const sel of ["#rk-from", "#rk-to", "#rk-rate", "#rk-custom"]) $(sel).addEventListener("input", renderRank);
+    $("#rk-rate").addEventListener("change", renderRank);
+
     bindTabs("#method-tabs", (f) => { view.methods.type = f; renderMethods(); });
     $("#method-sort").addEventListener("change", (e) => { view.methods.sort = e.target.value; renderMethods(); });
     $("#method-search").addEventListener("input", (e) => { view.methods.q = e.target.value; renderMethods(); });
@@ -642,11 +679,111 @@
       const b = e.target.closest("[data-reset]"); if (!b) return;
       const name = b.dataset.reset;
       if (name === "methods") { Object.assign(view.methods, { type: "all", sort: "default", q: "" }); setTab("#method-tabs", "all"); $("#method-sort").value = "default"; $("#method-search").value = ""; renderMethods(); }
+      if (name === "biz") { Object.assign(view.biz, { group: "all", sort: "default", q: "" }); setTab("#biz-tabs", "all"); $("#biz-sort").value = "default"; $("#biz-search").value = ""; renderBiz(); }
+      if (name === "fz") { Object.assign(view.fz, { tab: "all", q: "" }); setTab("#fz-tabs", "all"); $("#fz-search").value = ""; renderFunZone(); }
       if (name === "money") { Object.assign(view.money, { plat: "all", players: "all", q: "" }); setTab("#mg-platform", "all"); setTab("#mg-players", "all"); $("#mg-search").value = ""; renderMoney(); }
       if (name === "rp") { Object.assign(view.rp, { plat: "all", players: "all", q: "" }); setTab("#rp-platform", "all"); setTab("#rp-players", "all"); $("#rp-search").value = ""; renderRP(); }
       if (name === "fun") { Object.assign(view.fun, { cat: "all", plat: "all", q: "", limit: 24 }); setTab("#fun-tabs", "all"); setTab("#fun-platform", "all"); $("#fun-search").value = ""; renderFun(); }
       if (name === "cheats") { Object.assign(view.cheats, { group: "all", q: "" }); setTab("#cheat-group", "all"); $("#cheat-search").value = ""; renderCheats(); }
     });
+  }
+
+  /* ===================================================== businesses, rank, fun zone */
+  const GROUP_LABEL = { passive: "Passive", semi: "Semi-passive", active: "Hands-on", utility: "Utility & fun" };
+  const WORTH = new Set(["Buy first", "Great value", "Good"]);
+  const verdictClass = (v) => (/^(Buy first|Great value)$/.test(v) ? "free" : v === "Good" ? "live" : /^Skip/.test(v) ? "lock" : "est");
+
+  function businessCard(b) {
+    return `<article class="card" ${openAttrs(b.key)}>
+      <div class="card-top"><h3>${esc(b.name)}</h3><span class="tag ${verdictClass(b.verdict)}">${esc(b.verdict)}</span></div>
+      <div class="badges"><span class="tag">${esc(GROUP_LABEL[b.group])}</span></div>
+      <div class="kv">
+        <div><span>Buy-in</span><b>${b.cost ? money(b.cost) : "Varies"}</b></div>
+        <div><span>Income</span><b>${b.rate ? "≈ " + money(b.rate) + "/hr" + (b.disputed ? " ⚠" : "") : "Varies"}</b></div>
+        <div><span>Type</span><b>${esc(GROUP_LABEL[b.group].split(" ")[0])}</b></div>
+      </div>
+      ${b.disputed ? `<div class="badges"><span class="tag est">Income is disputed</span></div>` : ""}
+      <p>${esc(b.why)}</p>
+      <span class="open-hint">Details →</span>
+    </article>`;
+  }
+  function renderBiz() {
+    const v = view.biz;
+    let list = DB.businesses.filter((b) =>
+      (v.group === "all" || (v.group === "worth" ? WORTH.has(b.verdict) : b.group === v.group)) && matchQuery(b.hay, v.q));
+    const last = Number.MAX_SAFE_INTEGER;
+    if (v.sort === "cost") list = [...list].sort((a, b) => (a.cost ?? last) - (b.cost ?? last));
+    // disputed figures sort last so an optimistic single-source claim can't outrank solid ones
+    const solid = (b) => (b.disputed ? -1 : b.rate);
+    if (v.sort === "rate") list = [...list].sort((a, b) => solid(b) - solid(a));
+    if (v.sort === "value") {
+      const val = (b) => (b.cost && b.rate && !b.disputed ? b.rate / (b.cost / 1e6) : -1);
+      list = [...list].sort((a, b) => val(b) - val(a));
+    }
+    $("#biz-count").textContent = countText(list.length, DB.businesses.length, "businesses");
+    $("#biz-grid").innerHTML = list.map(businessCard).join("") || emptyState("biz", "No businesses match those filters.");
+  }
+
+  /** The weekly bonus (if any) that applies to a fun activity. */
+  function boostFor(a) {
+    if (!a.re || !isActive(DB.weekly.ends)) return null;
+    return (DB.weekly.bonuses || []).find((b) => a.re.test(b.text)) || null;
+  }
+  function activityCard(a) {
+    const boost = boostFor(a);
+    const badges = [`<span class="tag">${esc(a.players)}</span>`, a.free ? `<span class="tag free">Free to start</span>` : `<span class="tag lock">${esc(a.cost)}</span>`];
+    return `<article class="card" ${openAttrs(a.key)}>
+      <div class="card-top"><h3>${a.emoji} ${esc(a.name)}</h3>${boost ? `<span class="status working">🔥 ${esc(boost.mult)} this week</span>` : ""}</div>
+      <div class="badges">${badges.join("")}</div>
+      <div class="kv two"><div><span>Money</span><b>${esc(a.money)}</b></div><div><span>RP</span><b>${esc(a.rp)}</b></div></div>
+      <p>${esc(a.why)}</p>
+      <span class="open-hint">Tips →</span>
+    </article>`;
+  }
+  function renderFunZone() {
+    const v = view.fz;
+    const list = DB.activities.filter((a) => {
+      const ok = v.tab === "all" ? true
+        : v.tab === "boosted" ? !!boostFor(a)
+        : v.tab === "solo" ? (a.tags || []).includes("solo")
+        : v.tab === "friends" ? !/^Solo$/.test(a.players)
+        : v.tab === "free" ? a.free
+        : (a.tags || []).includes("rp");
+      return ok && matchQuery(a.hay, v.q);
+    });
+    $("#fz-count").textContent = countText(list.length, DB.activities.length, "activities");
+    $("#fz-grid").innerHTML = list.map(activityCard).join("") ||
+      emptyState("fz", v.tab === "boosted" ? "Nothing here is boosted this week." : "No activities match those filters.");
+  }
+
+  /* Cumulative RP to reach a rank (community formula, valid from rank 100: rank 100 = 1,584,350, rank 200 = 4,691,850). */
+  const rpTotal = (r) => 25 * r * r + 23575 * r - 1023150;
+  const fmt = (n) => Math.round(n).toLocaleString("en-US");
+  function readRank(sel, fallback) {
+    const n = Math.round(Number($(sel).value));
+    return Number.isFinite(n) ? Math.min(8000, Math.max(100, n)) : fallback;
+  }
+  function renderRank() {
+    const from = readRank("#rk-from", 100), to = readRank("#rk-to", 200);
+    const custom = $("#rk-rate").value === "custom";
+    $("#rk-custom-wrap").hidden = !custom;
+    const rate = custom ? Math.max(1, Number($("#rk-custom").value) || 1) : Number($("#rk-rate").value);
+    const need = to > from ? rpTotal(to) - rpTotal(from) : 0;
+    if (!need) {
+      $("#rk-out").innerHTML = `<p class="rk-big">Pick a higher target</p><p class="rk-sub">Your target rank must be above your current rank (both 100 or higher).</p>`;
+    } else {
+      const days = Math.ceil(need / rate);
+      const span = days >= 730 ? `${trimNum(days / 365, 1)} years` : days >= 60 ? `${trimNum(days / 30.4, 1)} months` : `${days} day${days === 1 ? "" : "s"}`;
+      $("#rk-out").innerHTML = `<p class="rk-big">${fmt(need)} RP</p>
+        <p class="rk-sub">Rank ${fmt(from)} to ${fmt(to)} · about <b>${span}</b> (${fmt(days)} days) at ${fmt(rate)} RP a day.</p>`;
+    }
+  }
+  function renderRankStatic() {
+    const base = rpTotal(100);
+    $("#rk-milestones").innerHTML = [120, 200, 300, 500, 1000, 2000, 5000, 8000].map((r) =>
+      `<tr><td>${fmt(r)}</td><td>${fmt(rpTotal(r))}</td><td>${fmt(rpTotal(r) - base)}</td></tr>`).join("");
+    $("#rp-methods").innerHTML = RP_METHODS.map((m) =>
+      `<article class="card mini-card"><h3>⭐ ${esc(m.name)}</h3><div class="badges"><span class="tag live">${esc(m.rp)}</span></div><p class="does">${esc(m.note)}</p></article>`).join("");
   }
 
   /* ===================================================== guide (tutorial) */
@@ -748,7 +885,44 @@
       <p class="g-foot">${it.curated ? `Overview reviewed ${esc(SITE.reviewedLabel)}.` : "Auto-listed from the community working list."} Steps and status change with Rockstar's patches.</p>`;
   }
 
-  function guideHTML(it) { return it.kind === "method" || it.kind === "passive" ? methodGuide(it) : glitchGuide(it); }
+  function businessGuide(b) {
+    const stepBtn = b.guide ? `<button class="btn btn-primary" type="button" data-open="${esc(b.guide)}">Step-by-step guide →</button>` : "";
+    return `<span class="g-kind">Business</span>
+      <h3 class="g-title" id="guide-title">${esc(b.name)}</h3>
+      <p class="g-line">${esc(b.income)}</p>
+      <div class="g-badges"><span class="tag ${verdictClass(b.verdict)}">${esc(b.verdict)}</span><span class="tag">${esc(GROUP_LABEL[b.group])}</span><span class="tag">${b.cost ? money(b.cost) + " buy-in" : "Price varies"}</span></div>
+      <div class="g-kv">
+        <div><span>Buy-in</span><b>${b.cost ? money(b.cost) : "Varies"}</b></div>
+        <div><span>Rate</span><b>${b.rate ? "≈ " + money(b.rate) + "/hr" + (b.disputed ? " ⚠" : "") : "Varies"}</b></div>
+        <div><span>Payback</span><b>${b.cost && b.rate ? duration((b.cost / b.rate) * 60) : "—"}</b></div>
+        <div><span>Type</span><b>${esc(GROUP_LABEL[b.group].split(" ")[0])}</b></div>
+      </div>
+      ${sec("Why it matters", `<p>${esc(b.why)}</p>`)}
+      ${sec("Pairs well with", `<p>${esc(b.pairs)}</p>`)}
+      ${sec("Watch out", b.watch || b.disputed ? `<div class="g-warn"><ul>${b.watch ? `<li>${esc(b.watch)}</li>` : ""}${b.disputed ? `<li>⚠ The income figure for this one is disputed between sources, so don't rely on the hourly rate.</li>` : ""}</ul></div>` : "")}
+      <div class="g-links">${stepBtn}${linkBtn(ytLink(b.name), "Find a recent video", !b.guide)}</div>
+      <p class="g-foot">Payback is buy-in divided by the hourly rate, so it's a rough guide. Rates are community estimates (reviewed ${esc(SITE.reviewedLabel)}).</p>`;
+  }
+  function activityGuide(a) {
+    const boost = boostFor(a);
+    return `<span class="g-kind">Fun activity</span>
+      <h3 class="g-title" id="guide-title">${a.emoji} ${esc(a.name)}</h3>
+      <p class="g-line">${esc(a.money)}</p>
+      <div class="g-badges"><span class="tag">${esc(a.players)}</span>${a.free ? `<span class="tag free">Free to start</span>` : `<span class="tag lock">${esc(a.cost)}</span>`}${boost ? `<span class="status working">🔥 ${esc(boost.mult)} this week</span>` : ""}</div>
+      ${sec("Why it's fun", `<p>${esc(a.why)}</p>`)}
+      ${sec("This week", boost ? `<div class="g-live"><ul><li>${esc(boost.mult)} ${esc(boost.text)}</li></ul></div>` : "")}
+      ${sec("What you get", list([`Money: ${a.money}`, `RP: ${a.rp}`]))}
+      ${sec("Tips", list(a.tips))}
+      <div class="g-links">${linkBtn(ytLink(a.name), "Find a recent video", true)}</div>
+      <p class="g-foot">Event bonuses change every Thursday. Payouts come from community guides (reviewed ${esc(SITE.reviewedLabel)}).</p>`;
+  }
+
+  function guideHTML(it) {
+    if (it.kind === "method" || it.kind === "passive") return methodGuide(it);
+    if (it.kind === "business") return businessGuide(it);
+    if (it.kind === "activity") return activityGuide(it);
+    return glitchGuide(it);
+  }
 
   const guideDlg = () => $("#guide");
   function openGuide(key, { push = true } = {}) {
@@ -825,6 +999,8 @@
     { id: "stashes", text: "Dig up both Buried Stashes", amt: "$50K" },
     { id: "chests", text: "Open the Cayo Perico Treasure Chests", amt: "$25K each" },
     { id: "skydives", text: "Junk Energy skydives", amt: "≤$50K" },
+    { id: "wheel", text: "Spin the Lucky Wheel (free daily spin)", amt: "Prize" },
+    { id: "carmeet", text: "LS Car Meet: the 14 daily activities", amt: "700 Rep" },
     { id: "safes", text: "Empty your Nightclub, Agency and Car Wash safes", amt: "Varies" },
     { id: "acid", text: "Resupply Acid Lab and Bunker", amt: "Passive" },
   ];
@@ -1086,7 +1262,7 @@
 
   /* ================================================================ boot */
   function renderAll() {
-    renderHero(); renderPlanner(); renderMethods(); renderMoney(); renderRP(); renderFun();
+    renderHero(); renderPlanner(); renderMethods(); renderBiz(); renderMoney(); renderRP(); renderFun(); renderFunZone(); renderRank();
     renderWeekly(); buildChecklist(); pillState();
     $("#tricks").innerHTML = MONEY_TRICKS.map((t) => `<article class="card mini-card trick"><h3>${esc(t.name)}</h3><p class="does">${esc(t.how)}</p></article>`).join("");
     $("#skiplist").innerHTML = SKIP.map((s) => `<article class="card mini-card skip"><h3>✕ ${esc(s.name)}</h3><p class="does">${esc(s.why)}</p></article>`).join("");
@@ -1104,6 +1280,7 @@
   initFilters();
   initCheats();
   renderStory();
+  renderRankStatic();
   renderAll();
   initGuide();
   initLive();

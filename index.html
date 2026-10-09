@@ -19,9 +19,12 @@
     <nav class="nav" aria-label="Sections">
       <a href="#planner">Planner</a>
       <a href="#methods">Money Methods</a>
+      <a href="#businesses">Businesses</a>
       <a href="#money-glitches">Money Glitches</a>
       <a href="#fun-glitches">Fun Glitches</a>
       <a href="#rp">RP Glitches</a>
+      <a href="#rank">Rank &amp; RP</a>
+      <a href="#funzone">Fun Zone</a>
       <a href="#weekly">This Week</a>
       <a href="#checklist">Checklist</a>
       <a href="#story">Story Mode</a>
@@ -215,10 +218,41 @@
       <div class="grid tricks" id="skiplist"></div>
     </section>
 
+    <!-- BUSINESSES -->
+    <section id="businesses" class="section">
+      <div class="section-head">
+        <p class="kicker">03 · Businesses</p>
+        <h2>Every business, ranked honestly</h2>
+        <p class="lead">Passive, semi-passive, hands-on and just-for-fun properties, with what they cost, what they really earn and whether they're worth buying. <b>Tap a card for details.</b></p>
+      </div>
+      <div class="filter-row">
+        <div class="tabs" id="biz-tabs" role="group" aria-label="Filter businesses">
+          <button class="tab active" data-filter="all">All</button>
+          <button class="tab" data-filter="passive">Passive</button>
+          <button class="tab" data-filter="semi">Semi-passive</button>
+          <button class="tab" data-filter="active">Hands-on</button>
+          <button class="tab" data-filter="utility">Utility &amp; fun</button>
+          <button class="tab" data-filter="worth">Worth buying</button>
+        </div>
+        <div class="controls">
+          <select id="biz-sort" class="select" aria-label="Sort businesses">
+            <option value="default">Recommended order</option>
+            <option value="cost">Cheapest first</option>
+            <option value="rate">Highest income per hour</option>
+            <option value="value">Best value (income per $1M)</option>
+          </select>
+          <input type="search" id="biz-search" class="search" placeholder="Search businesses…" aria-label="Search businesses">
+        </div>
+      </div>
+      <p class="count" id="biz-count" aria-live="polite"></p>
+      <div class="grid cards" id="biz-grid"></div>
+      <p class="fine">Income figures are community estimates (GTA Boss, Timesaver, GrindMap, CrimeNet Gazette) and use cooldown-inclusive rates for hands-on properties. They change when Rockstar patches the economy.</p>
+    </section>
+
     <!-- MONEY GLITCHES -->
     <section id="money-glitches" class="section">
       <div class="section-head">
-        <p class="kicker">03 · Money Glitches</p>
+        <p class="kicker">04 · Money Glitches</p>
         <h2>Glitches that print cash</h2>
         <p class="lead">Status is checked against the community working list by the auto-updater. <b>Tap a card for the overview and a link to the live guide.</b></p>
       </div>
@@ -247,7 +281,7 @@
     <!-- FUN GLITCHES -->
     <section id="fun-glitches" class="section">
       <div class="section-head">
-        <p class="kicker">04 · Fun Glitches</p>
+        <p class="kicker">05 · Fun Glitches</p>
         <h2>Break the game (for fun)</h2>
         <p class="lead">Invisible jets, walking in the sky, banned outfit combos. None of these make money, so the risk is low. The list grows automatically from the community working list.</p>
       </div>
@@ -275,7 +309,7 @@
     <!-- RP -->
     <section id="rp" class="section">
       <div class="section-head">
-        <p class="kicker">05 · RP &amp; Rank Glitches</p>
+        <p class="kicker">06 · RP &amp; Rank Glitches</p>
         <h2>Level up overnight</h2>
         <p class="lead">Rank unlocks weapons, upgrades and more jobs. These are the lowest-risk glitches because they don't add cash.</p>
       </div>
@@ -297,10 +331,73 @@
       <div class="grid cards" id="rp-grid"></div>
     </section>
 
+    <!-- RANK & RP -->
+    <section id="rank" class="section">
+      <div class="section-head">
+        <p class="kicker">07 · Rank &amp; RP</p>
+        <h2>How fast can you level?</h2>
+        <p class="lead">Work out how much RP a rank needs and how long it takes at your pace, then pick the best ways to earn it. The rank maths uses the community formula for rank 100 and up.</p>
+      </div>
+      <div class="rank-grid">
+        <div class="panel rank-calc">
+          <div class="rk-row">
+            <div><label class="label" for="rk-from">Current rank</label><input id="rk-from" class="num-input" type="number" min="100" max="8000" value="100" inputmode="numeric"></div>
+            <div><label class="label" for="rk-to">Target rank</label><input id="rk-to" class="num-input" type="number" min="100" max="8000" value="200" inputmode="numeric"></div>
+          </div>
+          <label class="label" for="rk-rate">My pace</label>
+          <select id="rk-rate" class="select full">
+            <option value="5000">Daily Objectives only: 5,000 RP a day</option>
+            <option value="9000">Objectives + one Cayo finale a day: about 9,000 RP a day</option>
+            <option value="custom">Custom RP per day</option>
+          </select>
+          <div id="rk-custom-wrap" hidden>
+            <label class="label" for="rk-custom">RP per day</label>
+            <input id="rk-custom" class="num-input" type="number" min="1" value="20000" inputmode="numeric">
+          </div>
+          <div class="rk-out" id="rk-out" aria-live="polite"></div>
+          <p class="fine">Check your own pace in the Pause menu. A 2× or 3× event week multiplies the RP from the boosted activity, so those weeks are the best time to push.</p>
+        </div>
+        <div class="panel">
+          <p class="label">Total RP from zero</p>
+          <div class="table-wrap">
+            <table class="stocks rk-table">
+              <thead><tr><th>Rank</th><th>Total RP</th><th>From rank 100</th></tr></thead>
+              <tbody id="rk-milestones"></tbody>
+            </table>
+          </div>
+          <p class="fine">Rank 120 unlocks the last item (the minigun). Rank 8,000 is the cap.</p>
+        </div>
+      </div>
+      <h3 class="sub-h">Best ways to earn RP</h3>
+      <div class="grid mini" id="rp-methods"></div>
+    </section>
+
+    <!-- FUN ZONE -->
+    <section id="funzone" class="section">
+      <div class="section-head">
+        <p class="kicker">08 · Fun Zone</p>
+        <h2>Fun that also pays</h2>
+        <p class="lead">Things worth doing just because they're a good time, with the money and RP they bring. Anything boosted in this week's event gets a badge automatically.</p>
+      </div>
+      <div class="filter-row">
+        <div class="tabs" id="fz-tabs" role="group" aria-label="Filter fun activities">
+          <button class="tab active" data-filter="all">All</button>
+          <button class="tab" data-filter="boosted">🔥 Boosted this week</button>
+          <button class="tab" data-filter="solo">Solo</button>
+          <button class="tab" data-filter="friends">With friends</button>
+          <button class="tab" data-filter="free">Free to start</button>
+          <button class="tab" data-filter="rp">Good for RP</button>
+        </div>
+        <input type="search" id="fz-search" class="search" placeholder="Search activities…" aria-label="Search fun activities">
+      </div>
+      <p class="count" id="fz-count" aria-live="polite"></p>
+      <div class="grid cards" id="fz-grid"></div>
+    </section>
+
     <!-- WEEKLY -->
     <section id="weekly" class="section">
       <div class="section-head">
-        <p class="kicker">06 · This Week in GTA Online</p>
+        <p class="kicker">09 · This Week in GTA Online</p>
         <h2 id="weekly-title"></h2>
         <p class="lead"><span id="weekly-range"></span> · <span id="weekly-countdown-wrap">Resets in <b id="weekly-countdown">—</b></span></p>
       </div>
@@ -328,7 +425,7 @@
     <!-- CHECKLIST -->
     <section id="checklist" class="section">
       <div class="section-head">
-        <p class="kicker">07 · Grind Checklist</p>
+        <p class="kicker">10 · Grind Checklist</p>
         <h2>Don't leave money on the table</h2>
         <p class="lead">Tick things off as you go. Daily items reset each day and weekly items reset every Thursday. Progress is saved in this browser.</p>
       </div>
@@ -347,7 +444,7 @@
     <!-- STORY -->
     <section id="story" class="section">
       <div class="section-head">
-        <p class="kicker">08 · Story Mode Money</p>
+        <p class="kicker">11 · Story Mode Money</p>
         <h2>Lester's stock market trick</h2>
         <p class="lead">The best legit way to get billions in Story Mode. Hold off on Lester's assassination missions until after <b>The Big Score</b>, then put every character's money into these stocks.</p>
       </div>
@@ -368,7 +465,7 @@
     <!-- CHEATS -->
     <section id="cheats" class="section">
       <div class="section-head">
-        <p class="kicker">09 · Story Mode Cheats</p>
+        <p class="kicker">12 · Story Mode Cheats</p>
         <h2>Cheat codes</h2>
         <p class="lead">Story Mode only. Cheats disable trophies and achievements until you reload a save. <span id="cheat-note"></span></p>
       </div>
@@ -394,7 +491,7 @@
     <!-- SECRETS -->
     <section id="secrets" class="section">
       <div class="section-head">
-        <p class="kicker">10 · Easter Eggs &amp; Secrets</p>
+        <p class="kicker">13 · Easter Eggs &amp; Secrets</p>
         <h2>Things most players never see</h2>
       </div>
       <div class="grid mini" id="egg-grid"></div>
@@ -403,7 +500,7 @@
     <!-- SAFETY -->
     <section id="safety" class="section">
       <div class="section-head">
-        <p class="kicker">11 · Ban Safety</p>
+        <p class="kicker">14 · Ban Safety</p>
         <h2>How not to get wiped</h2>
       </div>
       <div class="grid safety">

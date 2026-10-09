@@ -579,6 +579,29 @@ button.btn { cursor: pointer; font: inherit; font-weight: 700; }
   .modal { border-radius: 16px; }
 }
 
+/* ---------- businesses, rank, fun zone ---------- */
+.kv.two { grid-template-columns: repeat(2, 1fr); }
+.kv.two b { font-size: 12.5px; line-height: 1.35; display: block; font-family: var(--font-body); font-weight: 700; }
+.rank-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 20px; align-items: start; }
+.rk-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 4px; }
+.num-input {
+  width: 100%; min-width: 0; padding: 12px 14px; margin-bottom: 18px; border-radius: 12px;
+  border: 1px solid var(--line-strong); background: rgba(255,255,255,.04); color: var(--text);
+  font-family: var(--font-mono); font-size: 20px; font-weight: 700; outline: none;
+}
+.num-input:focus { border-color: var(--cyan); }
+.rk-out { margin: 20px 0 6px; padding: 16px 18px; border-radius: 14px; background: rgba(25,227,255,.07); border: 1px solid rgba(25,227,255,.25); }
+.rk-big { margin: 0; font-family: var(--font-display); font-size: clamp(32px, 5vw, 44px); line-height: 1.05; color: var(--cyan); }
+.rk-sub { margin: 8px 0 0; color: var(--muted); font-size: 14.5px; }
+.rk-sub b { color: var(--text); }
+.rk-table { min-width: 0; width: 100%; }
+.rk-table th, .rk-table td { padding: 10px 10px; font-size: 13.5px; white-space: nowrap; }
+.rk-table td:first-child { color: var(--text); font-family: var(--font-mono); }
+.rk-table td:nth-child(2), .rk-table td:nth-child(3) { font-family: var(--font-mono); color: var(--green); }
+.rk-table td:nth-child(2) { color: var(--cyan); }
+.tag.verdict { white-space: nowrap; }
+@media (max-width: 960px) { .rank-grid { grid-template-columns: minmax(0, 1fr); } }
+
 /* ---------- planner v2 ---------- */
 .planner-right { display: grid; gap: 20px; min-width: 0; align-content: start; }
 .mode-tabs { display: flex; margin: 0 0 22px; padding: 4px; border-radius: 12px; background: rgba(255,255,255,.05); gap: 4px; }

@@ -110,6 +110,8 @@ const METHOD_KEYS = {
   vehiclecargo: /vehicle cargo/i,
   casino: /casino heist|diamond casino/i,
   doomsday: /doomsday/i,
+  terrorbyte: /client job|terrorbyte/i,
+  yachtmissions: /superyacht|yacht mission/i,
 };
 const methodFor = (s) => Object.keys(METHOD_KEYS).find((id) => METHOD_KEYS[id].test(s)) || null;
 

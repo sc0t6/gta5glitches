@@ -69,6 +69,14 @@ If a source is down or changes its layout, that part keeps its previous values a
   its own, and a "best next purchase" ranking.
 - **Copy plan link** puts your exact plan in a `?plan=` link. Your settings are also saved in your browser.
 
+## Businesses, Rank & RP, Fun Zone
+
+- **Businesses:** 23 properties (passive, semi-passive, hands-on and utility) with buy-in, hourly rate, a verdict and
+  a "pairs well with" note. Rates are computed from the same live figures as the planner, and disputed ones are flagged
+  and sorted last.
+- **Rank & RP:** an RP calculator (rank 100 and up, using the community formula) plus the best ways to earn RP.
+- **Fun Zone:** fun activities with their money and RP. Anything boosted in this week's event is badged automatically.
+
 ## What is hand-written
 
 The tutorials, tips and ban-risk ratings in `data.js` are reviewed by hand (last review: Oct 5, 2026). Exploit
