@@ -60,6 +60,15 @@ page reads.
 
 If a source is down or changes its layout, that part keeps its previous values and a warning shows in the Live dialog.
 
+## The planner
+
+- **Reach a goal** or **make the most of my time** (how much can I earn in N hours).
+- Inputs: cash you already have, properties you own, players (solo / 2 / 3–4), longest single job, methods to skip,
+  whether to count passive income, weekly first-run bonuses, and methods where sources disagree.
+- Outputs: the fastest route (with cooldowns filled), an ETA in days at your play time per day, every method on
+  its own, and a "best next purchase" ranking.
+- **Copy plan link** puts your exact plan in a `?plan=` link. Your settings are also saved in your browser.
+
 ## What is hand-written
 
 The tutorials, tips and ban-risk ratings in `data.js` are reviewed by hand (last review: Oct 5, 2026). Exploit

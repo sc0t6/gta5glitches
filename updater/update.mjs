@@ -105,6 +105,11 @@ const METHOD_KEYS = {
   cayo: /cayo perico heist/i,
   autoshop: /auto shop/i,
   carwash: /car wash|money laundering/i,
+  payphone: /payphone hit/i,
+  vipwork: /vip work|headhunter|sightseer/i,
+  vehiclecargo: /vehicle cargo/i,
+  casino: /casino heist|diamond casino/i,
+  doomsday: /doomsday/i,
 };
 const methodFor = (s) => Object.keys(METHOD_KEYS).find((id) => METHOD_KEYS[id].test(s)) || null;
 
@@ -242,6 +247,7 @@ const ROW_MAP = [
 ];
 const PASSIVE_MAP = [
   { id: 'bunker', re: /bunker/i }, { id: 'acid', re: /acid/i }, { id: 'nightclub', re: /nightclub/i },
+  { id: 'cocaine', re: /cocaine/i }, { id: 'meth', re: /\bmeth\b/i }, { id: 'counterfeit', re: /counterfeit/i },
 ];
 function pick(list, rule) {
   if (!list.length) return null;

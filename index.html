@@ -64,23 +64,61 @@
       <div class="section-head">
         <p class="kicker">01 · Money Planner</p>
         <h2>How much do you need?</h2>
-        <p class="lead">Drag the slider to your goal and tap the properties you own. The planner builds the quickest legit route and fits other jobs into each cooldown.</p>
+        <p class="lead">Set a goal (or how long you can play), tell it what you own, who you're playing with and how long a job you'll do. The planner builds the quickest legit route, fits other jobs into each cooldown, and tells you what to buy next.</p>
       </div>
 
       <div class="planner">
         <div class="panel planner-controls">
-          <label class="label" for="money-slider">Target amount</label>
-          <div class="target-display">
-            <span class="currency">$</span><input id="money-input" class="money-input" inputmode="numeric" aria-label="Target amount in GTA dollars">
+          <div class="tabs mode-tabs" id="plan-mode" role="group" aria-label="Planner mode">
+            <button class="tab active" data-filter="goal">Reach a goal</button>
+            <button class="tab" data-filter="time">Make the most of my time</button>
           </div>
-          <input type="range" id="money-slider" min="0" max="1000" step="1" aria-label="Target amount slider">
-          <div class="slider-scale" aria-hidden="true"></div>
 
-          <p class="label">Saving for…</p>
-          <div class="chips" id="presets"></div>
+          <div id="goal-controls">
+            <label class="label" for="money-slider">Target amount</label>
+            <div class="target-display">
+              <span class="currency">$</span><input id="money-input" class="money-input" inputmode="numeric" aria-label="Target amount in GTA dollars">
+            </div>
+            <input type="range" id="money-slider" min="0" max="1000" step="1" aria-label="Target amount slider">
+            <div class="slider-scale" aria-hidden="true"></div>
+            <p class="label">Saving for…</p>
+            <div class="chips" id="presets"></div>
+          </div>
 
-          <p class="label">Properties I own</p>
+          <div id="time-controls" hidden>
+            <label class="label" for="hours-slider">Time I have to play</label>
+            <p class="hours-display" id="hours-display">4 hours</p>
+            <input type="range" id="hours-slider" min="1" max="24" step="1" value="4" aria-label="Hours to play">
+            <div class="slider-scale hours-scale" aria-hidden="true"><span style="left:0%">1h</span><span style="left:26%">7h</span><span style="left:52%">13h</span><span style="left:100%">24h</span></div>
+          </div>
+
+          <label class="label" for="cash-input">Cash I already have</label>
+          <div class="cash-row"><span class="currency small">$</span><input id="cash-input" class="cash-input" inputmode="numeric" placeholder="0" aria-label="Cash you already have"></div>
+
+          <p class="label">Players I can play with</p>
+          <div class="tabs seg" id="plan-players" role="group" aria-label="Number of players">
+            <button class="tab active" data-filter="1">Solo</button>
+            <button class="tab" data-filter="2">2 players</button>
+            <button class="tab" data-filter="4">3–4 players</button>
+          </div>
+
+          <p class="label">Longest single job I'll do</p>
+          <div class="tabs seg" id="plan-maxjob" role="group" aria-label="Longest job length">
+            <button class="tab active" data-filter="0">Any</button>
+            <button class="tab" data-filter="60">≤ 1 hour</button>
+            <button class="tab" data-filter="30">≤ 30 min</button>
+            <button class="tab" data-filter="15">≤ 15 min</button>
+          </div>
+
+          <div class="label-row"><p class="label">Properties I own</p>
+            <span class="mini-actions"><button type="button" class="link-btn" id="own-all">All</button><button type="button" class="link-btn" id="own-none">None</button></span></div>
           <div class="chips" id="owned"></div>
+
+          <details class="skip-box">
+            <summary>Skip specific methods<span id="skip-count"></span></summary>
+            <p class="fine">Tap any job you never want in your plan.</p>
+            <div class="chips" id="skip-chips"></div>
+          </details>
 
           <label class="switch">
             <input type="checkbox" id="passive-toggle" checked>
@@ -92,22 +130,51 @@
             <span class="switch-ui"></span>
             I haven't done this week's first-run bonuses yet
           </label>
+          <label class="switch">
+            <input type="checkbox" id="uncertain-toggle">
+            <span class="switch-ui"></span>
+            Include methods where sources disagree
+          </label>
+
+          <label class="label mt-s" for="perday">I play about</label>
+          <select id="perday" class="select full" aria-label="Hours played per day">
+            <option value="0.5">30 minutes a day</option>
+            <option value="1">1 hour a day</option>
+            <option value="2" selected>2 hours a day</option>
+            <option value="3">3 hours a day</option>
+            <option value="4">4 hours a day</option>
+            <option value="6">6 hours a day</option>
+            <option value="8">8 hours a day</option>
+          </select>
+
+          <div class="plan-actions">
+            <button type="button" class="btn btn-primary" id="plan-share">Copy plan link</button>
+            <button type="button" class="btn btn-ghost" id="plan-reset">Reset</button>
+          </div>
         </div>
 
-        <div class="panel planner-result" aria-live="polite">
-          <div class="result-head">
-            <div>
-              <p class="label">Fastest route</p>
-              <p class="result-time" id="route-time">—</p>
-              <p class="result-sub" id="route-sub"></p>
+        <div class="planner-right">
+          <div class="panel planner-result" aria-live="polite">
+            <div class="result-head">
+              <div>
+                <p class="label" id="route-label">Fastest route</p>
+                <p class="result-time" id="route-time">—</p>
+                <p class="result-sub" id="route-sub"></p>
+              </div>
+              <div class="result-badge" id="route-badge"></div>
             </div>
-            <div class="result-badge" id="route-badge"></div>
-          </div>
-          <ol class="route" id="route"></ol>
+            <ol class="route" id="route"></ol>
 
-          <p class="label mt">Single method only: time to reach your goal</p>
-          <div class="ranking" id="ranking"></div>
-          <p class="fine">Times are active play for a practiced solo player. Cooldowns are counted. Payouts are community estimates and change with weekly bonuses.</p>
+            <p class="label mt" id="rank-label">Single method only: time to reach your goal</p>
+            <div class="ranking" id="ranking"></div>
+            <p class="fine">Times are active play for a practiced solo player. Cooldowns are counted. Crew heists show your share in a 2-player crew. Payouts are community estimates and change with weekly bonuses.</p>
+          </div>
+
+          <div class="panel advice-panel">
+            <p class="label">Best next purchase</p>
+            <p class="fine adv-note">Which property adds the most steady income to your current setup, using repeat payouts over 20 hours of play.</p>
+            <ol class="advice" id="advice"></ol>
+          </div>
         </div>
       </div>
     </section>
@@ -124,6 +191,7 @@
           <button class="tab active" data-filter="all">All</button>
           <button class="tab" data-filter="heist">Heists</button>
           <button class="tab" data-filter="contract">Contracts &amp; jobs</button>
+          <button class="tab" data-filter="crew">Crew (2+)</button>
           <button class="tab" data-filter="free">No property needed</button>
           <button class="tab" data-filter="passive">Passive / AFK</button>
         </div>
@@ -142,6 +210,9 @@
 
       <h3 class="sub-h">Tricks that feel like glitches (but aren't)</h3>
       <div class="grid tricks" id="tricks"></div>
+
+      <h3 class="sub-h">Skip list: popular, but not worth your time</h3>
+      <div class="grid tricks" id="skiplist"></div>
     </section>
 
     <!-- MONEY GLITCHES -->

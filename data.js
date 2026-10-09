@@ -29,7 +29,13 @@ const PROPERTIES = [
   { id: "carwash",  name: "Hands On Car Wash",     cost: 1000000 },
   { id: "acid",     name: "Acid Lab",              cost: 750000 },
   { id: "bunker",   name: "Bunker",                cost: 1165000 },
-  { id: "nightclub",name: "Nightclub",             cost: 1500000 },
+  { id: "nightclub",name: "Nightclub",             cost: 1080000 },
+  { id: "arcade",   name: "Arcade",                cost: 1235000 },
+  { id: "facility", name: "Facility (Doomsday)",   cost: 1250000 },
+  { id: "vehiclewh",name: "Vehicle Warehouse",     cost: 1500000 },
+  { id: "cocaine",  name: "Cocaine Lockup (MC)",   cost: 2300000 },
+  { id: "meth",     name: "Meth Lab (MC)",         cost: 2100000 },
+  { id: "counterfeit", name: "Counterfeit Cash (MC)", cost: 1500000 },
 ];
 
 /* --------------------------------------------------------------------------
@@ -175,7 +181,7 @@ const METHODS = [
     payout: 160000, minutes: 30, cooldown: 0, solo: true, estimate: true,
     payoutLabel: "$153K–$166K net",
     blurb: "Short repeatable contracts. GTA Boss estimates $306K to $333K per hour when rotating three contracts (a single-source figure).",
-    tips: ["Payout is net after the 10% cut."],
+    tips: ["Payout is net after the 10% cut.", "The Union Depository contract is the best of them: about $270K, roughly $400K/hr."],
     tutorial: {
       needs: ["Auto Shop ($1.67M)"],
       steps: [
@@ -193,7 +199,7 @@ const METHODS = [
     payout: 45000, minutes: 10, cooldown: 0, solo: true, estimate: true,
     payoutLabel: "$30K–$60K each",
     blurb: "Quick contracts from your Agency computer. You need one of them completed to unlock the Dre contract, and event weeks sometimes add a cash bonus for finishing several.",
-    tips: ["Check 'This Week' for any bonus tied to Security Contracts."],
+    tips: ["Specialist-level contracts pay about $60K to $70K, roughly $180K/hr.", "Check 'This Week' for any bonus tied to Security Contracts."],
     tutorial: {
       needs: ["An Agency"],
       steps: [
@@ -242,6 +248,98 @@ const METHODS = [
     },
   },
   {
+    id: "payphone", name: "Payphone Hits", type: "contract", requires: "agency",
+    payout: 45000, minutes: 8, cooldown: 10, solo: true, estimate: true,
+    payoutLabel: "$15K base + up to $30K bonus",
+    blurb: "Franklin's assassination contracts, tied to the Celebrity Solutions Agency. Fast and solo-friendly: complete the hit the way the contract asks for the bonus. One source reports up to $85K with the bonus, GTABase lists $15K + $30K, so the planner uses $45K.",
+    tips: ["Unlocks after your third Security Contract.", "You have 15 minutes per target.", "Event weeks sometimes pay a big bonus for five hits. Check 'This Week'."],
+    tutorial: {
+      needs: ["An Agency (Celebrity Solutions Agency)", "Three Security Contracts completed"],
+      steps: [
+        "Finish three Security Contracts to unlock Payphone Hits.",
+        "Answer a payphone (or call Franklin) to start a hit. You have 15 minutes to eliminate the target.",
+        "Read the contract: it asks for a specific method (sniping, a vehicle crash, explosives and so on). Doing it that way earns the bonus on top of the $15K base.",
+        "After a short cooldown, line up the next hit. Solo or up to 4 players.",
+      ],
+      tips: ["Stack five in a row during event weeks that reward it."],
+      watch: ["Sources disagree on the bonus size ($30K vs $70K). Your own payout screen is the truth."],
+    },
+  },
+  {
+    id: "vipwork", name: "VIP Work (Headhunter / Sightseer)", type: "contract", requires: null,
+    payout: 25000, minutes: 9, cooldown: 0, solo: true, estimate: true,
+    payoutLabel: "$20K–$30K per job",
+    blurb: "A free solo filler. Headhunter pays up to $30K and Sightseer up to $25K. You need $50,000 banked (or an office) to register as VIP.",
+    tips: ["Alternate between job types so you aren't waiting on a cooldown."],
+    tutorial: {
+      needs: ["$50,000 in your bank, or an office"],
+      steps: [
+        "Register as a VIP/CEO from the interaction menu (this needs the $50K bank balance).",
+        "Start a Headhunter or Sightseer job.",
+        "Complete it for $20K to $30K.",
+        "Alternate job types to keep going without waiting.",
+      ],
+      tips: ["Good bridge between heists once you have a little cash."],
+      watch: ["Run time is an estimate. Pay is modest, so it's filler rather than a main grind."],
+    },
+  },
+  {
+    id: "vehiclecargo", name: "Vehicle Cargo", type: "contract", requires: "vehiclewh",
+    payout: 90000, minutes: 35, cooldown: 0, solo: true, estimate: true,
+    payoutLabel: "$80K–$100K per car",
+    blurb: "Steal and sell cars from a Vehicle Warehouse. Cars can't be raided in transit, which makes solo selling safer than most cargo. Figures come from a single ranking (about $160K/hr), so treat them as an estimate.",
+    tips: ["Source standard and mid-range cars first so the higher-value ones spawn."],
+    tutorial: {
+      needs: ["A Vehicle Warehouse (about $1.5M)"],
+      steps: [
+        "Buy a Vehicle Warehouse and register as CEO.",
+        "Source a vehicle from the list for the tier you want.",
+        "Deliver it to the warehouse, then sell it.",
+        "Collect $80K to $100K per car.",
+      ],
+      tips: [],
+      watch: ["Single-source numbers. Selling in a public session still carries some risk."],
+    },
+  },
+  {
+    id: "casino", name: "Diamond Casino Heist", type: "heist", requires: "arcade", crew: 2,
+    payout: 775000, firstWeekly: 1400000, minutes: 90, cooldown: 0, solo: false, estimate: true,
+    payoutLabel: "~$775K each (2 players) · ~$1.4M each first of the week",
+    blurb: "The best crew heist. The finale needs 2 to 4 players (every prep can be solo). A clean 2-player Hard Gold run nets about $700K to $850K each after Lester's and the crew's cuts, and the first finale each week pays roughly 1.86× (about $3.7M gross on Hard Gold).",
+    tips: ["Hard adds a flat 10% but needs a prior Normal completion.", "All three approaches pay the same vault value. Pick the one you can run cleanly.", "Diamonds are only on offer during event weeks."],
+    tutorial: {
+      needs: ["An Arcade owned by the host (cheapest $1.235M, Videogeddon $1.875M saves prep time)", "A second player for the finale (2 to 4 total)", "$25,000 setup fee to Lester per run"],
+      steps: [
+        "Buy an Arcade and plan the heist from its board. Preps can all be done solo.",
+        "Pick an approach: Silent & Sneaky, The Big Con or Aggressive. Vault payouts are identical.",
+        "Choose the vault target. Gold is the usual pick; Diamonds only appear during event weeks.",
+        "Pick your crew. Lester takes 5%, gunman and driver 5% each, hackers 5–10%, and every player gets at least a 15% cut.",
+        "Run the finale with your partner and get out with as little damage as possible.",
+        "Your first finale of the week pays the boosted rate (about 1.86×). Repeats pay the lower standard rate.",
+      ],
+      tips: ["The Big Con with Gruppe Sechs disguises is the usual pick for a two-player crew.", "Run it once a week for the bonus."],
+      watch: ["Taking damage while carrying loot costs about $2,000 per bullet hit.", "Per-player figures assume a 2-player crew. More players means smaller shares."],
+    },
+  },
+  {
+    id: "doomsday", name: "Doomsday Heist (Act III)", type: "heist", requires: "facility", crew: 2,
+    payout: 1010000, firstWeekly: 1240000, minutes: 210, cooldown: 0, solo: false, estimate: true,
+    payoutLabel: "~$1M each (2 players, estimate)",
+    blurb: "Needs 2 to 4 players. Act III pays $2,025,000 gross on Hard for repeats (Rockstar corrected the three finales on July 16, 2026), shared between the crew. Sources call the full Doomsday Heist dated: worth one weekly circuit if you enjoy it, not the cleanest farm.",
+    tips: ["Act I Hard is $1,096,875 and Act II Hard is $1,603,125 for repeats.", "The first completion each week pays a boost (about 1.22× on Act II)."],
+    tutorial: {
+      needs: ["A Facility (about $1.25M)", "At least one other player"],
+      steps: [
+        "Buy a Facility and start the Doomsday Heist from its planning screen.",
+        "Play the setup missions for the act with your crew.",
+        "Run the finale on Hard.",
+        "Collect your share of the gross payout and repeat for the next act.",
+      ],
+      tips: ["Doing all three acts in one circuit can be better than repeating one."],
+      watch: ["Per-player pay is our estimate (an even 2-way split of the gross).", "Run time covers an act's setups plus the finale (about 3.5 hours). One ranking puts the whole heist near $270K/hr."],
+    },
+  },
+  {
     id: "carwash", name: "Money Laundering (Hands On Car Wash)", type: "contract", requires: "carwash",
     payout: 35000, minutes: 10, cooldown: 0, solo: true,
     payoutLabel: "~$35K per mission",
@@ -270,8 +368,22 @@ const PASSIVE = [
     tutorial: { needs: ["Bunker (about $1.17M)"], steps: ["Buy a Bunker.", "Resupply it and let it produce.", "Sell stock in trips of up to $175K when solo.", "A full stock is worth about $1.05M."], tips: [], watch: ["Selling a full stock solo takes several trips."] } },
   { id: "nightclub", name: "Nightclub warehouse", perHour: 27500, requires: "nightclub", note: "~$1.83M net for a full warehouse. Always sells in one vehicle, whatever the size.",
     tutorial: { needs: ["Nightclub (about $1.5M)"], steps: ["Buy a Nightclub and assign technicians.", "Let the warehouse fill.", "Sell it all in one vehicle, any size."], tips: ["The nightclub safe also pays up to about $50K per in-game day while popularity stays high."], watch: [] } },
-  { id: "carwash", name: "Car Wash safe", perHour: 37500, requires: "carwash", note: "~$30K per in-game day once you own all three Money Fronts businesses.",
+  { id: "carwash", name: "Money Fronts safe", perHour: 5625, contested: true, requires: "carwash",
+    contestedNote: "Sources disagree: Timesaver says all three Money Fronts together pay only about $4.5K per in-game day, GTABase's guide says the Car Wash alone pays about $30K. The planner uses the low figure and hides this by default.",
+    note: "Reported at anywhere from ~$4.5K to ~$30K per in-game day (48 real minutes). Sources disagree.",
     tutorial: { needs: ["Hands On Car Wash plus the other two Money Fronts businesses"], steps: ["Own all three Money Fronts businesses.", "Keep Heat low by not spamming laundering missions.", "Collect the safe (up to $100K)."], tips: [], watch: ["Max Heat stops the safe from earning."] } },
+  { id: "nightclubsafe", name: "Nightclub safe", perHour: 62500, requires: "nightclub", estimate: true, note: "Up to $50K per in-game day (48 real minutes) while popularity stays at 95–100%. Holds up to $250K.",
+    tutorial: { needs: ["Nightclub (from about $1.08M)", "Staff upgrade ($475K) to reach the maximum rate"], steps: ["Buy a Nightclub and keep its popularity high (95–100%).", "Collect the safe every so often. It holds up to $250,000.", "Pair it with the warehouse for the best true passive income."], tips: ["Popularity decays, so it needs occasional attention."], watch: ["The rate assumes maximum popularity. It's an estimate of the best case."] } },
+  { id: "salvagesafe", name: "Salvage Yard safe", perHour: 30000, requires: "salvage", estimate: true, note: "About $24K per in-game day, even offline, once the yard has four towed vehicles. Holds $100K ($250K with the Wall Safe upgrade).",
+    tutorial: { needs: ["Salvage Yard ($1.62M)", "Four towed vehicles in the yard"], steps: ["Buy the Salvage Yard and tow four vehicles to it.", "Let the safe fill. It progresses while you're offline.", "Upgrade to the Wall Safe ($750K) to raise the cap to $250K."], tips: ["The yard also unlocks the weekly robberies."], watch: [] } },
+  { id: "agencysafe", name: "Agency safe", perHour: 25000, requires: "agency", estimate: true, note: "About $20K per in-game day, holds up to $250K. One source says the top rate needs 201 Security Contracts completed.",
+    tutorial: { needs: ["Agency ($2.01M)"], steps: ["Buy an Agency.", "Keep completing Security Contracts. The safe fills as you play.", "Collect it when you're nearby."], tips: [], watch: ["The rate is a best-case estimate that depends on how many contracts you've done."] } },
+  { id: "cocaine", name: "Cocaine Lockup (MC)", perHour: 67500, requires: "cocaine", note: "$525K for a full far-sale batch (5 hours to fill). Solo sells fit one vehicle of up to 3 units. GTA Boss's best semi-passive business.",
+    tutorial: { needs: ["A Cocaine Lockup (about $2.3M with the clubhouse)"], steps: ["Buy the lockup and keep it supplied.", "Let it fill (about 5 hours).", "Sell in batches of up to 3 units in one vehicle when solo."], tips: ["Selling to the Nightclub warehouse is another option."], watch: ["Un-upgraded businesses on bought supplies barely break even. Buy the equipment and staff upgrades."] } },
+  { id: "meth", name: "Meth Lab (MC)", perHour: 43125, requires: "meth", note: "$446K for a full far-sale batch (about 6 hours). Solo sells fit one vehicle of up to 5 bins.",
+    tutorial: { needs: ["A Meth Lab (about $2.1M with the clubhouse)"], steps: ["Buy the lab and keep it supplied.", "Let it fill.", "Sell up to 5 bins per vehicle when solo."], tips: ["Pairs well with the Cocaine Lockup for chained sales."], watch: ["Needs upgrades to be worth it."] } },
+  { id: "counterfeit", name: "Counterfeit Cash (MC)", perHour: 40781, requires: "counterfeit", note: "$367.5K for a full batch. Solo sells fit one vehicle of up to 10 units. The Car Wash boosts it by 35%.",
+    tutorial: { needs: ["A Counterfeit Cash Factory (about $1.5M with the clubhouse)"], steps: ["Buy the factory and keep it supplied.", "Let it fill.", "Sell up to 10 units per vehicle when solo."], tips: ["The cheapest MC business to start."], watch: ["Needs upgrades to be worth it."] } },
 ];
 
 const PRESETS = [
@@ -288,6 +400,23 @@ const MONEY_TRICKS = [
   { name: "Cooldown Rotation", how: "Start Cayo. During its 144-minute cooldown, run Dre, Auto Shop or Security Contracts. Nothing sits idle and your hourly rate roughly doubles." },
   { name: "Event-Week Freebies", how: "Event weeks regularly add free cash rewards (like a bonus for completing a handful of Security Contracts). Check 'This Week' every Thursday." },
   { name: "Daily Collectibles Loop", how: "Buried Stashes, Shipwrecks and Treasure Chests reset daily at $25K each. Cheap, fast cash on top of anything else you do." },
+  { name: "Passive Safe Stack", how: "Nightclub, Salvage Yard, Agency, Arcade, Money Fronts and Garment Factory safes together accrue roughly $105K per 48 minutes (about $132K per real hour). It costs about $12.6M fully set up, and it pays while you do other things." },
+  { name: "Daily Wheel Spin", how: "The Lucky Wheel at the Diamond Casino gives a free spin every day after a $500 membership. Take it, but skip the tables: they lose money over time." },
+  { name: "Junk Energy Skydives", how: "Ten skydive challenges a day pay $5K each, plus $50K for finishing all ten. No property needed." },
+  { name: "Stash House Starter", how: "If you finish a Stash House before owning any business, you get $30,000. A quick first payday for new accounts." },
+];
+
+/* Popular but not worth your time. Reasons come from the cited ranking guides. */
+const SKIP = [
+  { name: "Podium vehicle sale", why: "The podium vehicle sells for $0. Keep it for yourself." },
+  { name: "Casino gambling", why: "Negative expectation. Take the free daily wheel spin and stop." },
+  { name: "Special Cargo", why: "About $130K/hr in one ranking, after a $2.9M warehouse and slow sourcing." },
+  { name: "Air Freight (Hangar) cargo", why: "Sources disagree wildly ($80K to $600K/hr). Treat it as unproven." },
+  { name: "Original Heists (after the first)", why: "Crew-only (Fleeca needs 2, the rest need 4). Worth it mainly for the first weekly bonus." },
+  { name: "Business Battles & freemode events", why: "Need three unaffiliated players, so they rarely appear for solo players." },
+  { name: "Un-upgraded MC businesses on bought supplies", why: "Document Forgery runs at a loss and the others barely break even without upgrades." },
+  { name: "Gun Van & LS Tags", why: "The Gun Van only saves money. LS Tags give RP, not cash." },
+  { name: "Public-lobby sell missions", why: "The +50% bonus is real, but other players can destroy your cargo." },
 ];
 
 /* --------------------------------------------------------------------------
@@ -498,48 +627,100 @@ const EASTER_EGGS = [
   { name: "Peyote Plants", where: "Story Mode and Online (Halloween)", how: "Eat a peyote plant to turn into an animal for a short time." },
 ];
 
-/* This week's event: fallback copy of what the updater last fetched (Oct 5, 2026).
+/* This week's event: fallback copy of what the updater last fetched (2026-10-09).
    The live version in data/live.js replaces this automatically. */
 const WEEKLY = {
-  title: "Halloween in Los Santos",
-  range: "October 1 – 7, 2026",
-  ends: "2026-10-08T09:00:00.000Z",
+  title: "Second Week of Halloween Event",
+  range: "October 8 – 14, 2026",
+  ends: "2026-10-15T09:00:00.000Z",
   bonuses: [
-    { mult: "3×", text: "GTA$ & RP on Slasher" },
-    { mult: "3×", text: "GTA$ & RP on Halloween Survivals: Ludendorff Cemetery Survival, Cayo Perico Survival & Alien Survivals" },
-    { mult: "3×", text: "GTA$ & RP on San Andreas Super Sport Series: Hotring Races, Random Transform Races" },
-    { mult: "3×", text: "GTA$ & RP on Community Race Series" },
-    { mult: "2×", text: "GTA$ & RP on Bail Office Bounties" },
-    { mult: "2×", text: "GTA$ & RP on Dispatch Work" },
-    { mult: "2×", text: "GTA$ & RP on UFO Business Battles" },
-    { mult: "2×", text: "GTA$ & RP on Jack O' Lanterns" },
-    { mult: "2×", text: "GTA$ on Ghosts Exposed" },
+    {
+      mult: "3×",
+      text: "GTA$ & RP on Hotring Circuit / San Andreas Super Sport Series"
+    },
+    {
+      mult: "3×",
+      text: "GTA$ & RP on Halloween Survivals: Ludendorff Cemetery Survival, Cayo Perico Survival & Alien Survivals"
+    },
+    {
+      mult: "3×",
+      text: "GTA$ & RP on San Andreas Super Sport Series: Hotring Races, Random Transform Races"
+    },
+    {
+      mult: "3×",
+      text: "GTA$ & RP on Community Race Series"
+    },
+    {
+      mult: "2×",
+      text: "GTA$ & RP on The Black Box File"
+    },
+    {
+      mult: "2×",
+      text: "GTA$ & RP on Bail Office Bounties"
+    },
+    {
+      mult: "2×",
+      text: "GTA$ & RP on Dispatch Work"
+    },
+    {
+      mult: "2×",
+      text: "GTA$ & RP on UFO Business Battles"
+    },
+    {
+      mult: "2×",
+      text: "GTA$ & RP on Jack O' Lanterns"
+    },
+    {
+      mult: "2×",
+      text: "GTA$ on Ghosts Exposed"
+    }
   ],
   rewards: [
-    "Complete five Security Contracts through October 7 to receive $500,000 within 72 hours of completion",
-    "Secure two Bail Office Bounties to get the Green Vintage Skull Mask and $100,000",
-    "Complete all Weekly Challenges through November 4 to receive $2,000,000 within 72 hours of completion",
-    "Get the Cheerleader Massacre 3 T-Shirt for free through October 7 (must be claimed from in-game clothing stores)",
-    "Gun Van: free Baseball Bat, The Shocker",
+    "Win 2 Adversary Modes to receive the Pink Skull Emissive Mask and $100,000",
+    "Gun Van: free Baseball Bat, The Shocker"
   ],
-  podium: "Cinquemila",
-  prizeRide: "Dominator GTT",
+  podium: "Savestra",
+  prizeRide: "Walton L35 (Lifted)",
   sales: [
     "40% off: Brigham, Fränken Stange, Lurcher, Tornado Rat Rod, Sanctus, all Agency locations",
-    "30% off: Schlagen GT, Vigero ZX, Brioso 300, Komoda, Buzzard Attack Chopper, Ultralight, Ardent, Sparrow, Powersurge",
+    "30% off: Remus, Terrorbyte, Club, Greenwood, Jester RR, ETR1, Itali GTO, Hotring Everon, Tempesta, SC1"
   ],
   extras: [
-    { title: "Kortz Center Heist Primary Targets", items: ["Chat on Fruit", "Juiced", "The Downfall of Rome"] },
-    { title: "Salvage Yard Robberies", items: ["The Cargo Ship Robbery: Buffalo EVX (Top Tier)", "The McTony Robbery: Everon (Standard Tier)", "The Duggan Robbery: Fränken Stange (Standard Tier)"] },
-    { title: "Premium Race & Trials", items: ["Premium Race: Arms Race", "Time Trial: Maze Bank Arena", "HSW Time Trial: Ron Alternates to Elysian Island"] },
+    {
+      title: "Kortz Center Heist Primary Targets",
+      items: [
+        "Pumpkin",
+        "A Winding Road Home",
+        "Winter, Nowhere in Particular"
+      ]
+    },
+    {
+      title: "Salvage Yard Robberies",
+      items: [
+        "The McTony Robbery: Growler (Top Tier)",
+        "The Gangbanger Robbery: Fränken Stange (Standard Tier)",
+        "The Podium Robbery: Eudora (Low Tier)"
+      ]
+    },
+    {
+      title: "Premium Race & Trials",
+      items: [
+        "Premium Race: The Commute",
+        "Time Trial: Terminal to Chiliad Mountain State Wilderness",
+        "HSW Time Trial: Tongva Valley"
+      ]
+    }
   ],
   methodEvents: {
-    bail: { x: 2, label: "2× this week (ends Oct 7)" },
-    dispatch: { x: 2, label: "2× this week (ends Oct 7)" },
+    bail: {
+      x: 2,
+      label: "2× this week (ends Oct 14)"
+    },
+    dispatch: {
+      x: 2,
+      label: "2× this week (ends Oct 14)"
+    }
   },
-  methodBonuses: {
-    security: { runs: 5, amount: 500000, label: "$500,000 bonus after 5 (ends Oct 7)" },
-    bail: { runs: 2, amount: 100000, label: "$100,000 bonus after 2 (ends Oct 7)" },
-  },
-  sourceUrl: "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
+  methodBonuses: {},
+  sourceUrl: "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts"
 };

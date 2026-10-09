@@ -167,12 +167,48 @@
   };
   const toSlider = (amt) => Math.round((STEPS * Math.log(Math.min(MAX, Math.max(MIN, amt)) / MIN)) / Math.log(MAX / MIN));
 
-  const plan = {
-    target: store.get("gls.target", 2200000),
-    owned: new Set(store.get("gls.owned", [])),
-    passive: store.get("gls.passive", true),
-    bonus: store.get("gls.bonus", true),
+  const PLAN_DEFAULTS = {
+    target: 2200000, cash: 0, owned: [], skip: [], passive: true, bonus: true, uncertain: false,
+    players: 1, maxJob: 0, mode: "goal", hours: 4, perDay: 2,
   };
+  const clampNum = (v, lo, hi, d) => { v = Number(v); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : d; };
+
+  /** Turn untrusted input (localStorage, shared link) into a valid plan. */
+  function sanitizePlan(raw) {
+    const clean = Object.fromEntries(Object.entries(raw || {}).filter(([, v]) => v !== undefined));
+    const p = { ...PLAN_DEFAULTS, ...clean };
+    return {
+      target: clampNum(p.target, MIN, MAX * 20, PLAN_DEFAULTS.target),
+      cash: clampNum(p.cash, 0, MAX * 20, 0),
+      owned: new Set((Array.isArray(p.owned) ? p.owned : []).filter((id) => PROPERTIES.some((x) => x.id === id))),
+      skip: new Set((Array.isArray(p.skip) ? p.skip : []).filter((id) => METHODS.some((x) => x.id === id))),
+      passive: !!p.passive, bonus: !!p.bonus, uncertain: !!p.uncertain,
+      players: [1, 2, 4].includes(+p.players) ? +p.players : 1,
+      maxJob: [0, 60, 30, 15].includes(+p.maxJob) ? +p.maxJob : 0,
+      mode: p.mode === "time" ? "time" : "goal",
+      hours: clampNum(p.hours, 1, 24, 4),
+      perDay: clampNum(p.perDay, 0.5, 12, 2),
+    };
+  }
+  function loadPlan() {
+    let raw = store.get("gls.plan.v2", null);
+    if (!raw) raw = { target: store.get("gls.target", undefined), owned: store.get("gls.owned", []), passive: store.get("gls.passive", true), bonus: store.get("gls.bonus", true) };
+    let shared = false;
+    try {
+      const q = new URLSearchParams(location.search).get("plan");
+      if (q) { raw = { ...raw, ...JSON.parse(atob(q)) }; shared = true; }
+    } catch { /* ignore a malformed link */ }
+    return { plan: sanitizePlan(raw), shared };
+  }
+  const loadedPlan = loadPlan();
+  const plan = loadedPlan.plan;
+  const planPayload = () => ({ ...plan, owned: [...plan.owned], skip: [...plan.skip] });
+  const savePlan = () => store.set("gls.plan.v2", planPayload());
+
+  /** Does this method pass the player-count, skip, uncertainty and job-length filters? (Ownership is checked separately.) */
+  const eligible = (m) =>
+    !plan.skip.has(m.id) && (m.crew || 1) <= plan.players && (!m.contested || plan.uncertain) && (!plan.maxJob || m.minutes <= plan.maxJob);
+  const passiveOk = (p) => !p.contested || plan.uncertain;
 
   /** Payout for the k-th run (0-based) of a method. */
   function runPay(m, k, useBonus) {
@@ -184,6 +220,7 @@
     return pay;
   }
 
+  /** Time to reach `goal` using only one method. */
   function soloPlan(m, goal, useBonus) {
     let total = 0, minutes = 0, runs = 0;
     const cap = m.weeklyLimit || 6000;
@@ -195,25 +232,37 @@
     }
     return { runs, minutes, total, reached: total >= goal };
   }
+  /** Money one method alone earns in `cap` minutes. */
+  function soloTime(m, cap, useBonus) {
+    let total = 0, t = 0, runs = 0;
+    while (t + m.minutes <= cap && (!m.weeklyLimit || runs < m.weeklyLimit) && runs < 3000) {
+      total += runPay(m, runs, useBonus);
+      t += m.minutes + (m.cooldown || 0);
+      runs++;
+    }
+    return { runs, total };
+  }
 
-  function bestRoute(goal) {
-    const avail = DB.methods.filter((m) => !m.requires || plan.owned.has(m.requires));
-    const passiveRate = plan.passive ? DB.passive.filter((p) => plan.owned.has(p.requires)).reduce((s, p) => s + p.perHour, 0) : 0;
+  /** Greedy route over all eligible methods, filling cooldowns. Stops at `goal` dollars or `cap` minutes. */
+  function bestRoute({ goal = Infinity, cap = Infinity, owned = plan.owned, bonus = plan.bonus } = {}) {
+    const avail = DB.methods.filter((m) => eligible(m) && (!m.requires || owned.has(m.requires)));
+    const passiveRate = plan.passive
+      ? DB.passive.filter((p) => owned.has(p.requires) && passiveOk(p)).reduce((s, p) => s + p.perHour, 0) : 0;
     const st = new Map(avail.map((m) => [m.id, { runs: 0, next: 0 }]));
+    const capped = (m) => m.weeklyLimit && st.get(m.id).runs >= m.weeklyLimit;
     let t = 0, total = 0, waited = 0, passiveEarned = 0, guard = 0;
     const log = [];
     const accrue = (dt) => { const p = (passiveRate * dt) / 60; passiveEarned += p; total += p; };
 
-    while (total < goal && guard++ < 8000) {
+    while (total < goal && t < cap && guard++ < 8000) {
       const remaining = goal - total;
       let best = null, bestScore = -1;
       for (const m of avail) {
         const s = st.get(m.id);
-        if (m.weeklyLimit && s.runs >= m.weeklyLimit) continue;
-        if (t < s.next) continue;
-        const pay = runPay(m, s.runs, plan.bonus);
+        if (capped(m) || t < s.next || t + m.minutes > cap) continue;
+        const pay = runPay(m, s.runs, bonus);
         let score = Math.min(pay, remaining) / m.minutes;
-        if (plan.bonus && m.bonus && isActive(m.bonus.until) && s.runs < m.bonus.runs) {
+        if (bonus && m.bonus && isActive(m.bonus.until) && s.runs < m.bonus.runs) {
           const left = m.bonus.runs - s.runs;
           let bundle = 0;
           for (let i = 0; i < left; i++) bundle += runPay(m, s.runs + i, true);
@@ -222,18 +271,24 @@
         if (score > bestScore) { bestScore = score; best = m; }
       }
       if (!best) {
-        const nexts = avail.filter((m) => !(m.weeklyLimit && st.get(m.id).runs >= m.weeklyLimit)).map((m) => st.get(m.id).next);
-        if (!nexts.length) break;
-        const jump = Math.max(Math.min(...nexts) - t, 1);
+        const later = avail.filter((m) => !capped(m) && st.get(m.id).next > t && st.get(m.id).next + m.minutes <= cap);
+        if (!later.length) break;
+        const jump = Math.max(Math.min(...later.map((m) => st.get(m.id).next)) - t, 1);
         accrue(jump); t += jump; waited += jump;
         continue;
       }
       const s = st.get(best.id);
-      const pay = runPay(best, s.runs, plan.bonus);
+      const pay = runPay(best, s.runs, bonus);
       total += pay; accrue(best.minutes);
       t += best.minutes;
       s.runs++; s.next = t + (best.cooldown || 0);
       log.push({ m: best, pay });
+    }
+    // Out of jobs: remaining time (or the rest of the goal) can still be earned passively.
+    if (cap !== Infinity && t < cap) { accrue(cap - t); waited += cap - t; t = cap; }
+    else if (goal !== Infinity && total < goal && passiveRate > 0) {
+      const mins = ((goal - total) / passiveRate) * 60;
+      passiveEarned += goal - total; total = goal; t += mins; waited += mins;
     }
 
     const agg = [];
@@ -245,85 +300,168 @@
     return { minutes: t, waited, total, agg, passiveEarned, passiveRate, reached: total >= goal, jobs: log.length };
   }
 
+  /** Which unowned property adds the most sustained income? (20-hour horizon, repeat payouts only.) */
+  function purchaseAdvice() {
+    const hours = 20;
+    const base = bestRoute({ cap: hours * 60, bonus: false }).total;
+    const helps = (p) => DB.methods.some((m) => m.requires === p.id && eligible(m)) || DB.passive.some((x) => x.requires === p.id && passiveOk(x));
+    return DB.properties.filter((p) => !plan.owned.has(p.id) && helps(p)).map((p) => {
+      const gain = bestRoute({ cap: hours * 60, bonus: false, owned: new Set([...plan.owned, p.id]) }).total - base;
+      const perHour = gain / hours;
+      return { p, perHour, payback: perHour > 0 ? p.cost / perHour : Infinity };
+    }).filter((x) => x.perHour > 0).sort((a, b) => a.payback - b.payback).slice(0, 5);
+  }
+
   function initPlanner() {
-    const slider = $("#money-slider"), input = $("#money-input");
+    const slider = $("#money-slider"), input = $("#money-input"), cash = $("#cash-input"), hours = $("#hours-slider");
     $(".slider-scale").innerHTML = [[50000, "$50K"], [1e6, "$1M"], [1e7, "$10M"], [5e7, "$50M"]]
       .map(([v, l]) => `<span style="left:${(toSlider(v) / STEPS) * 100}%">${l}</span>`).join("");
     $("#presets").innerHTML = PRESETS.map((p) => `<button class="chip" data-amt="${p.amount}">${esc(p.label)} <small>${money(p.amount)}</small></button>`).join("");
     $("#owned").innerHTML = PROPERTIES.map((p) => `<button class="chip" data-id="${p.id}" aria-pressed="false">${esc(p.name)}</button>`).join("");
+    $("#skip-chips").innerHTML = METHODS.map((m) => `<button class="chip" data-id="${m.id}" aria-pressed="false">${esc(m.name.replace(/ \(.+\)$/, ""))}</button>`).join("");
 
-    const setTarget = (amt, fromSlider) => {
-      plan.target = Math.min(MAX * 20, Math.max(MIN, Math.round(amt) || MIN));
-      if (!fromSlider) slider.value = toSlider(plan.target);
-      slider.style.setProperty("--fill", (slider.value / STEPS) * 100 + "%");
-      if (document.activeElement !== input) input.value = plan.target.toLocaleString("en-US");
-      store.set("gls.target", plan.target);
-      renderPlanner();
-    };
-    slider.addEventListener("input", () => setTarget(toAmount(+slider.value), true));
-    input.addEventListener("input", () => { const n = parseFloat(input.value.replace(/[^0-9.]/g, "")); if (n > 0) setTarget(n, false); });
+    const commit = () => { savePlan(); renderPlanner(); };
+    const parseMoney = (s) => parseFloat(String(s).replace(/[^0-9.]/g, ""));
+
+    slider.addEventListener("input", () => { plan.target = toAmount(+slider.value); commit(); });
+    input.addEventListener("input", () => { const n = parseMoney(input.value); if (n > 0) { plan.target = clampNum(n, MIN, MAX * 20, plan.target); commit(); } });
     input.addEventListener("blur", () => (input.value = plan.target.toLocaleString("en-US")));
     input.addEventListener("keydown", (e) => e.key === "Enter" && input.blur());
-    $("#presets").addEventListener("click", (e) => { const b = e.target.closest(".chip"); if (b) setTarget(+b.dataset.amt, false); });
-    $("#owned").addEventListener("click", (e) => {
+    cash.addEventListener("input", () => { const n = parseMoney(cash.value); plan.cash = Number.isFinite(n) ? clampNum(n, 0, MAX * 20, 0) : 0; commit(); });
+    cash.addEventListener("blur", () => (cash.value = plan.cash ? plan.cash.toLocaleString("en-US") : ""));
+    cash.addEventListener("keydown", (e) => e.key === "Enter" && cash.blur());
+    hours.addEventListener("input", () => { plan.hours = +hours.value; commit(); });
+    $("#perday").addEventListener("change", (e) => { plan.perDay = +e.target.value; commit(); });
+
+    $("#presets").addEventListener("click", (e) => { const b = e.target.closest(".chip"); if (b) { plan.target = +b.dataset.amt; commit(); } });
+    // look the Set up at click time: Reset replaces plan.owned / plan.skip with fresh Sets
+    const toggleSet = (key) => (e) => {
       const b = e.target.closest(".chip"); if (!b) return;
-      plan.owned.has(b.dataset.id) ? plan.owned.delete(b.dataset.id) : plan.owned.add(b.dataset.id);
-      store.set("gls.owned", [...plan.owned]);
-      renderPlanner();
+      const set = plan[key];
+      set.has(b.dataset.id) ? set.delete(b.dataset.id) : set.add(b.dataset.id);
+      commit();
+    };
+    $("#owned").addEventListener("click", toggleSet("owned"));
+    $("#skip-chips").addEventListener("click", toggleSet("skip"));
+    $("#own-all").addEventListener("click", () => { PROPERTIES.forEach((p) => plan.owned.add(p.id)); commit(); });
+    $("#own-none").addEventListener("click", () => { plan.owned.clear(); commit(); });
+
+    bindTabs("#plan-mode", (f) => { plan.mode = f; commit(); });
+    bindTabs("#plan-players", (f) => { plan.players = +f; commit(); });
+    bindTabs("#plan-maxjob", (f) => { plan.maxJob = +f; commit(); });
+    const toggles = { "#passive-toggle": "passive", "#bonus-toggle": "bonus", "#uncertain-toggle": "uncertain" };
+    for (const [sel, key] of Object.entries(toggles)) $(sel).addEventListener("change", (e) => { plan[key] = e.target.checked; commit(); });
+
+    $("#plan-share").addEventListener("click", async () => {
+      const url = `${location.origin}${location.pathname}?plan=${encodeURIComponent(btoa(JSON.stringify(planPayload())))}`;
+      try { await navigator.clipboard.writeText(url); toast("Plan link copied. Anyone who opens it gets this exact plan."); }
+      catch { toast("Couldn't copy automatically. Your plan link: " + url, 12000); }
     });
-    const pt = $("#passive-toggle"), bt = $("#bonus-toggle");
-    pt.checked = plan.passive; bt.checked = plan.bonus;
-    pt.addEventListener("change", () => { plan.passive = pt.checked; store.set("gls.passive", plan.passive); renderPlanner(); });
-    bt.addEventListener("change", () => { plan.bonus = bt.checked; store.set("gls.bonus", plan.bonus); renderPlanner(); });
-    setTarget(plan.target, false);
+    $("#plan-reset").addEventListener("click", () => {
+      const fresh = sanitizePlan({});
+      for (const k of Object.keys(fresh)) plan[k] = fresh[k];
+      commit(); toast("Planner reset.");
+    });
+    renderPlanner();
   }
 
   function renderPlanner() {
-    const goal = plan.target;
-    $$("#owned .chip").forEach((c) => { const on = plan.owned.has(c.dataset.id); c.classList.toggle("on", on); c.setAttribute("aria-pressed", on); });
-    $$("#presets .chip").forEach((c) => c.classList.toggle("on", +c.dataset.amt === goal));
+    const goalMode = plan.mode === "goal";
+    const $on = (el, on) => { el.classList.toggle("on", on); el.setAttribute("aria-pressed", on); };
 
-    const r = bestRoute(goal);
-    $("#route-time").textContent = r.reached ? "≈ " + duration(r.minutes) : "Not reachable";
-    const sessions = Math.max(1, Math.ceil(r.minutes / 180));
-    $("#route-sub").textContent = r.reached
-      ? `${money(r.total)} from ${r.jobs} job${r.jobs === 1 ? "" : "s"}` +
-        (r.waited > 5 ? ` · ${duration(r.waited)} spent waiting on cooldowns` : "") +
-        (r.minutes > 180 ? ` · about ${sessions} sessions of 3 hours` : "")
-      : "Unlock more properties to get there.";
+    // ---- sync the controls with the plan
+    $("#goal-controls").hidden = !goalMode;
+    $("#time-controls").hidden = goalMode;
+    setTab("#plan-mode", plan.mode); setTab("#plan-players", String(plan.players)); setTab("#plan-maxjob", String(plan.maxJob));
+    const slider = $("#money-slider"), input = $("#money-input"), cash = $("#cash-input");
+    slider.value = toSlider(plan.target);
+    slider.style.setProperty("--fill", (slider.value / STEPS) * 100 + "%");
+    if (document.activeElement !== input) input.value = plan.target.toLocaleString("en-US");
+    if (document.activeElement !== cash) cash.value = plan.cash ? plan.cash.toLocaleString("en-US") : "";
+    $("#hours-slider").value = plan.hours;
+    $("#hours-display").textContent = `${plan.hours} hour${plan.hours === 1 ? "" : "s"}`;
+    $("#perday").value = String(plan.perDay);
+    $("#passive-toggle").checked = plan.passive; $("#bonus-toggle").checked = plan.bonus; $("#uncertain-toggle").checked = plan.uncertain;
+    $$("#owned .chip").forEach((c) => $on(c, plan.owned.has(c.dataset.id)));
+    $$("#skip-chips .chip").forEach((c) => $on(c, plan.skip.has(c.dataset.id)));
+    $$("#presets .chip").forEach((c) => $on(c, +c.dataset.amt === plan.target));
+    $("#skip-count").textContent = plan.skip.size ? ` (${plan.skip.size} skipped)` : "";
+
+    // ---- results
+    const need = Math.max(0, plan.target - plan.cash);
+    const cap = plan.hours * 60;
+    const r = goalMode ? (need > 0 ? bestRoute({ goal: need }) : null) : bestRoute({ cap });
+    $("#route-label").textContent = goalMode ? "Fastest route" : `Best use of ${plan.hours} hour${plan.hours === 1 ? "" : "s"}`;
+    $("#rank-label").textContent = goalMode ? "Single method only: time to reach your goal" : `Single method only: money earned in ${plan.hours} hour${plan.hours === 1 ? "" : "s"}`;
+
+    if (!r) {
+      $("#route-time").textContent = "You're there";
+      $("#route-sub").textContent = `You already have ${money(plan.cash)}, which covers your ${money(plan.target)} goal.`;
+    } else if (goalMode) {
+      $("#route-time").textContent = r.reached ? "≈ " + duration(r.minutes) : "Not reachable";
+      const days = Math.ceil(r.minutes / (plan.perDay * 60));
+      const parts = [`${money(r.total)} from ${r.jobs} job${r.jobs === 1 ? "" : "s"}`];
+      if (r.waited > 5) parts.push(`${duration(r.waited)} spent waiting on cooldowns`);
+      if (r.reached && r.minutes > plan.perDay * 60) parts.push(`about ${days} day${days === 1 ? "" : "s"} at ${plan.perDay}h a day`);
+      $("#route-sub").textContent = r.reached ? parts.join(" · ") : "Unlock more properties, add players or relax your filters to get there.";
+    } else {
+      $("#route-time").textContent = "≈ " + money(r.total);
+      $("#route-sub").textContent = `${r.jobs} job${r.jobs === 1 ? "" : "s"} in ${plan.hours} hour${plan.hours === 1 ? "" : "s"}` +
+        (plan.cash ? ` · ${money(plan.cash + r.total)} with the cash you already have` : "") + (r.total ? "" : ". Own a property or add players to unlock jobs.");
+    }
 
     const eventLive = DB.methods.some((m) => (m.event && isActive(m.event.until)) || (m.bonus && isActive(m.bonus.until)));
-    const usesWeekly = plan.bonus && r.agg.some((a) => a.m.firstWeekly);
+    const usesWeekly = plan.bonus && r && r.agg.some((a) => a.m.firstWeekly);
     $("#route-badge").textContent = eventLive ? `★ ${DB.weekly.title}` : usesWeekly ? "★ Weekly bonuses" : "";
 
-    const rows = r.agg.map((a) => {
+    const rows = r ? r.agg.map((a) => {
       const meta = [`${a.runs} run${a.runs > 1 ? "s" : ""}`, `~${duration(a.runs * a.m.minutes)} play`];
       if (a.m.firstWeekly && plan.bonus) meta.push("includes weekly bonus");
+      if (a.m.crew > 1) meta.push(`needs ${a.m.crew}+ players`);
       return `<li><div><div class="r-name">${esc(a.m.name)}</div><div class="r-meta">${meta.join(" · ")}</div></div><span class="r-amt">+${money(a.amount)}</span></li>`;
-    });
-    if (r.passiveEarned > 500) {
+    }) : [];
+    if (r && r.passiveEarned > 500) {
       rows.push(`<li class="passive"><div><div class="r-name">Passive businesses</div><div class="r-meta">${money(r.passiveRate)}/hr ticking in the background · sell when full</div></div><span class="r-amt">+${money(r.passiveEarned)}</span></li>`);
     }
-    $("#route").innerHTML = rows.join("") || `<li><span class="empty">Pick a target to get started.</span></li>`;
+    $("#route").innerHTML = rows.join("") || `<li><span class="empty">${r ? "No jobs available with these settings." : "Nothing to do. Raise your target."}</span></li>`;
 
-    const list = DB.methods.map((m) => {
+    // ---- every eligible method on its own
+    const goal = Math.max(need, 1);
+    const list = DB.methods.filter(eligible).map((m) => {
       const owned = !m.requires || plan.owned.has(m.requires);
       const setup = owned ? 0 : propCost(m.requires);
-      return { m, owned, setup, p: soloPlan(m, goal + setup, plan.bonus) };
-    }).sort((a, b) => (b.p.reached - a.p.reached) || (a.p.minutes - b.p.minutes));
+      return { m, owned, setup, p: soloPlan(m, goal + setup, plan.bonus), t: soloTime(m, cap, plan.bonus) };
+    });
+    if (goalMode) list.sort((a, b) => (b.p.reached - a.p.reached) || (a.p.minutes - b.p.minutes));
+    else list.sort((a, b) => (b.owned - a.owned) || (b.t.total - a.t.total));
     const fastest = Math.min(...list.filter((x) => x.p.reached).map((x) => x.p.minutes), Infinity);
-    $("#ranking").innerHTML = list.map(({ m, owned, setup, p }) => {
+    const best = Math.max(...list.map((x) => x.t.total), 1);
+    $("#ranking").innerHTML = list.map(({ m, owned, setup, p, t }) => {
       const tags = [];
       if (!m.requires) tags.push(`<span class="tag free">Free</span>`);
       else if (!owned) tags.push(`<span class="tag lock">Needs ${esc(propName(m.requires))} +${money(setup)}</span>`);
+      if (m.crew > 1) tags.push(`<span class="tag">${m.crew}+ players</span>`);
+      if (m.contested) tags.push(`<span class="tag est">Uncertain</span>`);
       if (m.event && isActive(m.event.until)) tags.push(`<span class="tag event">${m.event.x}× now</span>`);
       if (m.bonus && isActive(m.bonus.until)) tags.push(`<span class="tag event">+${money(m.bonus.amount)} bonus</span>`);
       if (m.weeklyLimit) tags.push(`<span class="tag">${m.weeklyLimit}/week</span>`);
-      const width = p.reached ? Math.max(4, (fastest / p.minutes) * 100) : 2;
-      const time = p.reached ? `${duration(p.minutes)}<small>${p.runs} run${p.runs > 1 ? "s" : ""}</small>` : `—<small>max ${money(p.total)}/wk</small>`;
+      let width, time;
+      if (goalMode) {
+        width = p.reached ? Math.max(4, (fastest / p.minutes) * 100) : 2;
+        time = p.reached ? `${duration(p.minutes)}<small>${p.runs} run${p.runs > 1 ? "s" : ""}</small>` : `—<small>max ${money(p.total)}/wk</small>`;
+      } else {
+        width = Math.max(2, (t.total / best) * 100);
+        time = `${money(t.total)}<small>${t.runs} run${t.runs === 1 ? "" : "s"}</small>`;
+      }
       return `<div class="rank-row ${owned ? "" : "locked"}"><div><div class="rank-name">${esc(m.name.replace(/ \(.+\)$/, ""))} ${tags.join("")}</div>
         <div class="rank-bar"><i style="width:${width}%"></i></div></div><div class="rank-time">${time}</div></div>`;
-    }).join("");
+    }).join("") || `<p class="fine">No methods match your filters.</p>`;
+
+    // ---- what to buy next
+    const advice = purchaseAdvice();
+    $("#advice").innerHTML = advice.map((a, i) => `<li><span class="adv-n">${i + 1}</span><div><div class="r-name">${esc(a.p.name)} <span class="tag">${money(a.p.cost)}</span></div>
+      <div class="r-meta">adds about ${money(a.perHour)}/hr · pays back in about ${a.payback < 1 ? "under an hour" : duration(a.payback * 60)} of play</div></div></li>`).join("")
+      || `<li><span class="empty">Nothing left that adds income with these settings.</span></li>`;
   }
 
   /* ======================================================= filter helpers */
@@ -362,8 +500,9 @@
 
   function methodCard(m) {
     const badges = [];
-    if (m.solo) badges.push(`<span class="tag">Solo</span>`);
+    badges.push(m.crew > 1 ? `<span class="tag">${m.crew}+ players</span>` : m.solo ? `<span class="tag">Solo</span>` : "");
     badges.push(m.requires ? `<span class="tag">${esc(propName(m.requires))}</span>` : `<span class="tag free">No property</span>`);
+    if (m.contested) badges.push(`<span class="tag est">Sources disagree</span>`);
     if (m.event && isActive(m.event.until)) badges.push(`<span class="tag event">${esc(m.event.label)}</span>`);
     if (m.bonus && isActive(m.bonus.until)) badges.push(`<span class="tag event">${esc(m.bonus.label)}</span>`);
     if (m.weeklyLimit) badges.push(`<span class="tag">${m.weeklyLimit} per week</span>`);
@@ -387,7 +526,7 @@
     return `<article class="card" ${openAttrs("passive:" + p.id)}>
       <div class="card-top"><h3>${esc(p.name)}</h3><span class="status working">Passive</span></div>
       <div class="payout">≈ ${money(p.perHour)}/hr</div>
-      <div class="badges"><span class="tag">${money(propCost(p.requires))} setup</span><span class="tag">AFK-friendly</span>${p.updated ? `<span class="tag live">Live figures</span>` : ""}</div>
+      <div class="badges"><span class="tag">${money(propCost(p.requires))} setup</span><span class="tag">AFK-friendly</span>${p.contested ? `<span class="tag est">Sources disagree</span>` : ""}${p.estimate ? `<span class="tag est">Estimate</span>` : ""}${p.updated ? `<span class="tag live">Live figures</span>` : ""}</div>
       <p>${esc(p.note)}</p>
       <span class="open-hint">How it works →</span>
     </article>`;
@@ -398,6 +537,7 @@
     const need = (m) => (m.requires ? propCost(m.requires) : 0);
     let active = DB.methods.filter((m) => {
       if (v.type === "heist" || v.type === "contract") return m.type === v.type;
+      if (v.type === "crew") return m.crew > 1;
       if (v.type === "free") return !m.requires;
       return v.type !== "passive";
     }).filter((m) => matchQuery(norm(m.name + " " + m.blurb + " " + m.type), v.q));
@@ -541,8 +681,10 @@
     const badges = [];
     if (m.requires) badges.push(`<span class="tag">${esc(propName(m.requires))} · ${money(propCost(m.requires))}</span>`);
     else if (!isPassive) badges.push(`<span class="tag free">No property needed</span>`);
-    if (m.solo) badges.push(`<span class="tag">Solo</span>`);
-    if (m.estimate) badges.push(`<span class="tag est">Run time is an estimate</span>`);
+    if (m.crew > 1) badges.push(`<span class="tag">${m.crew}+ players</span>`);
+    else if (m.solo) badges.push(`<span class="tag">Solo</span>`);
+    if (m.estimate) badges.push(`<span class="tag est">${isPassive ? "Estimate" : "Run time is an estimate"}</span>`);
+    if (m.contested) badges.push(`<span class="tag est">Sources disagree</span>`);
     if (m.updated) badges.push(`<span class="tag live">Live figures</span>`);
     const kv = isPassive ? "" : `<div class="g-kv">
       <div><span>Run time</span><b>~${duration(m.minutes)}</b></div>
@@ -556,6 +698,7 @@
       <div class="g-badges">${badges.join("")}</div>${kv}
       ${sec("Overview", `<p>${esc(isPassive ? m.note : m.blurb)}</p>`)}
       ${sec("This week", week)}
+      ${m.contestedNote ? sec("Sources disagree", `<div class="g-warn"><ul><li>${esc(m.contestedNote)}</li></ul></div>`) : ""}
       ${sec("What you need", list(t.needs))}
       ${sec("Step by step", list(t.steps, "g-steps"))}
       ${sec("Tips", list([...(isPassive ? [] : m.tips || []), ...(t.tips || [])]))}
@@ -693,6 +836,8 @@
     { id: "knoway", text: "KnoWay Out on Hard: first clear", amt: "$683K" },
     { id: "cluckin", text: "Cluckin' Bell Farm Raid: first run", amt: "$600K" },
     { id: "challenge", text: "Weekly Challenge", amt: "$100K" },
+    { id: "casino", text: "Diamond Casino Heist finale with a partner (2+ players)", amt: "~$1.4M each" },
+    { id: "doomsday", text: "A Doomsday Heist act with a partner (2+ players)", amt: "Boosted" },
   ];
   function weekId() {
     const now = new Date();
@@ -944,6 +1089,7 @@
     renderHero(); renderPlanner(); renderMethods(); renderMoney(); renderRP(); renderFun();
     renderWeekly(); buildChecklist(); pillState();
     $("#tricks").innerHTML = MONEY_TRICKS.map((t) => `<article class="card mini-card trick"><h3>${esc(t.name)}</h3><p class="does">${esc(t.how)}</p></article>`).join("");
+    $("#skiplist").innerHTML = SKIP.map((s) => `<article class="card mini-card skip"><h3>✕ ${esc(s.name)}</h3><p class="does">${esc(s.why)}</p></article>`).join("");
     // keep an open guide in sync with fresh data
     const dlg = guideDlg();
     if (dlg.open && location.hash.startsWith("#guide=")) openGuide(decodeURIComponent(location.hash.slice(7)), { push: false });
@@ -951,6 +1097,10 @@
 
   buildDB(window.GLITCH_LIVE || null);
   initPlanner();
+  if (loadedPlan.shared) {
+    toast("Loaded a shared plan. Tweak it and share your own.", 6000);
+    setTimeout(() => $("#planner").scrollIntoView(), 400);
+  }
   initFilters();
   initCheats();
   renderStory();
