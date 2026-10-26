@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generatedAt": "2026-10-25T23:15:48.050Z",
+ "generatedAt": "2026-10-26T04:44:38.087Z",
  "weekly": {
   "title": "Fourth Week of Halloween Event",
   "range": "October 22 – 28, 2026",
@@ -3063,21 +3063,21 @@
    "name": "GTABase weekly update",
    "url": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
    "ok": true,
-   "checkedAt": "2026-10-25T23:15:48.050Z"
+   "checkedAt": "2026-10-26T04:44:38.087Z"
   },
   {
    "id": "guide",
    "name": "GTA Boss solo money guide",
    "url": "https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online",
    "ok": true,
-   "checkedAt": "2026-10-25T23:15:48.050Z"
+   "checkedAt": "2026-10-26T04:44:38.087Z"
   },
   {
    "id": "hub",
    "name": "r/GTAGlitches working list",
    "url": "https://gtaglitches.com/working-glitches",
    "ok": true,
-   "checkedAt": "2026-10-25T23:15:48.050Z"
+   "checkedAt": "2026-10-26T04:44:38.087Z"
   }
  ],
  "ok": true,
