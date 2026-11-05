@@ -1,10 +1,10 @@
 {
  "schema": 1,
- "generatedAt": "2026-11-05T06:43:22.393Z",
+ "generatedAt": "2026-11-05T17:23:07.473Z",
  "weekly": {
   "title": "Heist Event Week",
-  "range": "November 5 – 4, 2026",
-  "ends": "2026-11-05T09:00:00.000Z",
+  "range": "November 5 – 11, 2026",
+  "ends": "2026-11-12T09:00:00.000Z",
   "bonuses": [
    {
     "mult": "3×",
@@ -84,15 +84,15 @@
   "methodEvents": {
    "doomsday": {
     "x": 2,
-    "label": "2× this week (ends Nov 4)"
+    "label": "2× this week (ends Nov 11)"
    },
    "casino": {
     "x": 2,
-    "label": "2× this week (ends Nov 4)"
+    "label": "2× this week (ends Nov 11)"
    },
    "knoway": {
     "x": 2,
-    "label": "2× this week (ends Nov 4)"
+    "label": "2× this week (ends Nov 11)"
    }
   },
   "methodBonuses": {},
@@ -3031,6 +3031,12 @@
  "patched": [],
  "history": [
   {
+   "at": "2026-11-05T17:23:07.473Z",
+   "changes": [
+    "This week: Heist Event Week (November 5 – 11, 2026)"
+   ]
+  },
+  {
    "at": "2026-11-04T23:39:19.436Z",
    "changes": [
     "This week: Heist Event Week (November 5 – 4, 2026)"
@@ -3061,7 +3067,9 @@
    ]
   }
  ],
- "changes": [],
+ "changes": [
+  "This week: Heist Event Week (November 5 – 11, 2026)"
+ ],
  "warnings": [],
  "sources": [
   {
@@ -3069,23 +3077,23 @@
    "name": "GTABase weekly update",
    "url": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
    "ok": true,
-   "checkedAt": "2026-11-05T06:43:22.393Z"
+   "checkedAt": "2026-11-05T17:23:07.473Z"
   },
   {
    "id": "guide",
    "name": "GTA Boss solo money guide",
    "url": "https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online",
    "ok": true,
-   "checkedAt": "2026-11-05T06:43:22.393Z"
+   "checkedAt": "2026-11-05T17:23:07.473Z"
   },
   {
    "id": "hub",
    "name": "r/GTAGlitches working list",
    "url": "https://gtaglitches.com/working-glitches",
    "ok": true,
-   "checkedAt": "2026-11-05T06:43:22.393Z"
+   "checkedAt": "2026-11-05T17:23:07.473Z"
   }
  ],
  "ok": true,
- "contentHash": "1ed07a53159d"
+ "contentHash": "b2f433814e95"
 }
