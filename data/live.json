@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generatedAt": "2026-11-08T10:18:42.241Z",
+ "generatedAt": "2026-11-08T17:55:43.789Z",
  "weekly": {
   "title": "Heist Event Week",
   "range": "November 5 – 11, 2026",
@@ -3077,14 +3077,14 @@
    "name": "GTABase weekly update",
    "url": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
    "ok": true,
-   "checkedAt": "2026-11-08T10:18:42.241Z"
+   "checkedAt": "2026-11-08T17:55:43.789Z"
   },
   {
    "id": "guide",
    "name": "GTA Boss solo money guide",
    "url": "https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online",
    "ok": true,
-   "checkedAt": "2026-11-08T10:18:42.241Z"
+   "checkedAt": "2026-11-08T17:55:43.789Z"
   },
   {
    "id": "hub",
@@ -3092,7 +3092,7 @@
    "url": "https://gtaglitches.com/working-glitches",
    "ok": false,
    "error": "only 0 glitches found (layout changed?)",
-   "checkedAt": "2026-11-08T10:18:42.241Z"
+   "checkedAt": "2026-11-08T17:55:43.789Z"
   }
  ],
  "ok": true,
