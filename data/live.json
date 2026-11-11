@@ -1,98 +1,127 @@
 {
  "schema": 1,
- "generatedAt": "2026-11-11T14:25:48.492Z",
+ "generatedAt": "2026-11-11T21:56:05.495Z",
  "weekly": {
-  "title": "Heist Event Week",
-  "range": "November 5 – 11, 2026",
-  "ends": "2026-11-12T09:00:00.000Z",
+  "title": "Contact Missions Event",
+  "range": "November 12 – December 2, 2026",
+  "ends": "2026-12-03T09:00:00.000Z",
   "bonuses": [
    {
-    "mult": "3×",
-    "text": "GTA$ & RP on Mansion Raid"
+    "mult": "4×",
+    "text": "GTA$ & RP on Freemode Challenges"
    },
    {
-    "mult": "2×",
+    "mult": "3×",
+    "text": "GTA$ & RP on Stunt Races"
+   },
+   {
+    "mult": "3×",
     "text": "GTA$ & RP on Community Series Jobs"
    },
    {
     "mult": "2×",
-    "text": "GTA$ & RP on The Fleeca Job"
-   },
-   {
-    "mult": "2×",
-    "text": "GTA$ & RP on The Prison Break"
-   },
-   {
-    "mult": "2×",
-    "text": "GTA$ & RP on The Doomsday Heist: Preparations"
-   },
-   {
-    "mult": "2×",
-    "text": "GTA$ & RP on The Doomsday Heist - Act 1: The Data Breaches"
-   },
-   {
-    "mult": "2×",
-    "text": "GTA$ & RP on The Doomsday Heist - Act 2: The Bogdan Problem"
-   },
-   {
-    "mult": "2×",
-    "text": "GTA$ & RP on The Diamond Casino Heist"
-   },
-   {
-    "mult": "2×",
     "text": "GTA$ & RP on KnoWay Out"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Client Jobs"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on New Listings"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Ron's Missions"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Lamar's Missions"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Gerald's Missions"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Lamar's Lowriders"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Lester's Missions"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Mobile Operations"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Project Overthrow"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Madrazo Dispatch Services"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Gerald's Last Play"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Simeon's Premium Deluxe Repo Work"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on Sumo (Remix)"
+   },
+   {
+    "mult": "2×",
+    "text": "GTA$ & RP on The Brute Force File"
    }
   ],
   "rewards": [
-   "Win an Adversary Mode to get $100,000",
+   "Win two Stunt Races to get $100,000",
    "Gun Van: free Baseball Bat & Knife"
   ],
-  "podium": "Entity XXR",
-  "prizeRide": "Hellion",
+  "podium": "Everon",
+  "prizeRide": "Powersurge",
   "sales": [
-   "40% off: Eclipse Towers,Penthouse Suite 1, Eclipse Towers,Penthouse Suite 2, Eclipse Towers,Penthouse Suite 3, The Diamond Casino Penthouse, The Diamond Casino Master Penthouse, Facilities, Apartments",
-   "30% off: Vorschlaghammer, Taipan, Blista Kanjo, Cheetah, Insurgent, Coquette D5, Penumbra FF, Reaper, Besra, Rampant Rocket Tricycle",
-   "25% off: Veleno GT"
+   "30% off: Castigator, Hotring Sabre, Impaler LX, Tahoma Coupe, Vagner, Vivanite, Wastelander, I-Wagen, Tailgater S, Rebla GTS"
   ],
   "extras": [
    {
     "title": "Kortz Center Heist Primary Targets",
     "items": [
-     "The Outcome of Endeavour",
-     "To Beat About the Bush",
-     "Hare Oneself Think",
-     "True Love"
+     "In Excess of Success",
+     "What are Melons?",
+     "Breathless"
     ]
    },
    {
     "title": "Salvage Yard Robberies",
     "items": [
-     "The Podium Robbery: Hellion",
-     "The Cargo Ship Robbery: Z-Type",
-     "The McTony Robbery: Cinquemila"
+     "The Gangbanger Robbery: Seminole Frontier",
+     "The McTony Robbery: Hotring Everon",
+     "The Cargo Ship Robbery: Stinger TT"
     ]
    },
    {
     "title": "Premium Race & Trials",
     "items": [
-     "Premium Race: At the Races",
-     "Time Trial: LSIA",
-     "HSW Time Trial: Del Perro Beach to Murietta Heights"
+     "Premium Race: Down the Drain",
+     "Time Trial: Calafia Way",
+     "HSW Time Trial: Sandy Shores to La Puerta"
     ]
    }
   ],
   "methodEvents": {
-   "doomsday": {
-    "x": 2,
-    "label": "2× this week (ends Nov 11)"
-   },
-   "casino": {
-    "x": 2,
-    "label": "2× this week (ends Nov 11)"
-   },
    "knoway": {
     "x": 2,
-    "label": "2× this week (ends Nov 11)"
+    "label": "2× this week (ends Dec 2)"
+   },
+   "terrorbyte": {
+    "x": 2,
+    "label": "2× this week (ends Dec 2)"
    }
   },
   "methodBonuses": {},
@@ -3031,6 +3060,12 @@
  "patched": [],
  "history": [
   {
+   "at": "2026-11-11T21:56:05.495Z",
+   "changes": [
+    "This week: Contact Missions Event (November 12 – December 2, 2026)"
+   ]
+  },
+  {
    "at": "2026-11-05T17:23:07.473Z",
    "changes": [
     "This week: Heist Event Week (November 5 – 11, 2026)"
@@ -3067,7 +3102,9 @@
    ]
   }
  ],
- "changes": [],
+ "changes": [
+  "This week: Contact Missions Event (November 12 – December 2, 2026)"
+ ],
  "warnings": [
   "r/GTAGlitches working list: only 0 glitches found (layout changed?) (kept previous data)"
  ],
@@ -3077,14 +3114,14 @@
    "name": "GTABase weekly update",
    "url": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
    "ok": true,
-   "checkedAt": "2026-11-11T14:25:48.492Z"
+   "checkedAt": "2026-11-11T21:56:05.495Z"
   },
   {
    "id": "guide",
    "name": "GTA Boss solo money guide",
    "url": "https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online",
    "ok": true,
-   "checkedAt": "2026-11-11T14:25:48.492Z"
+   "checkedAt": "2026-11-11T21:56:05.495Z"
   },
   {
    "id": "hub",
@@ -3092,9 +3129,9 @@
    "url": "https://gtaglitches.com/working-glitches",
    "ok": false,
    "error": "only 0 glitches found (layout changed?)",
-   "checkedAt": "2026-11-11T14:25:48.492Z"
+   "checkedAt": "2026-11-11T21:56:05.495Z"
   }
  ],
  "ok": true,
- "contentHash": "b2f433814e95"
+ "contentHash": "6635a42c02ed"
 }
