@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generatedAt": "2026-11-21T02:11:53.221Z",
+ "generatedAt": "2026-11-21T10:58:33.085Z",
  "weekly": {
   "title": "Contact Missions Event",
   "range": "November 12 – December 2, 2026",
@@ -3104,6 +3104,7 @@
  ],
  "changes": [],
  "warnings": [
+  "GTA Boss solo money guide: methods table not found (layout changed?) (kept previous data)",
   "r/GTAGlitches working list: only 0 glitches found (layout changed?) (kept previous data)"
  ],
  "sources": [
@@ -3112,14 +3113,15 @@
    "name": "GTABase weekly update",
    "url": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
    "ok": true,
-   "checkedAt": "2026-11-21T02:11:53.221Z"
+   "checkedAt": "2026-11-21T10:58:33.085Z"
   },
   {
    "id": "guide",
    "name": "GTA Boss solo money guide",
    "url": "https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online",
-   "ok": true,
-   "checkedAt": "2026-11-21T02:11:53.221Z"
+   "ok": false,
+   "error": "methods table not found (layout changed?)",
+   "checkedAt": "2026-11-21T10:58:33.085Z"
   },
   {
    "id": "hub",
@@ -3127,7 +3129,7 @@
    "url": "https://gtaglitches.com/working-glitches",
    "ok": false,
    "error": "only 0 glitches found (layout changed?)",
-   "checkedAt": "2026-11-21T02:11:53.221Z"
+   "checkedAt": "2026-11-21T10:58:33.085Z"
   }
  ],
  "ok": true,
