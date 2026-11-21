@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "generatedAt": "2026-11-21T10:58:33.085Z",
+ "generatedAt": "2026-11-21T19:13:24.379Z",
  "weekly": {
   "title": "Contact Missions Event",
   "range": "November 12 – December 2, 2026",
@@ -3113,7 +3113,7 @@
    "name": "GTABase weekly update",
    "url": "https://www.gtabase.com/gta-online/weekly-update-bonuses-discounts",
    "ok": true,
-   "checkedAt": "2026-11-21T10:58:33.085Z"
+   "checkedAt": "2026-11-21T19:13:24.379Z"
   },
   {
    "id": "guide",
@@ -3121,7 +3121,7 @@
    "url": "https://www.gtaboss.gg/gta-5-online/guides/solo-money-making-guide-gta-online",
    "ok": false,
    "error": "methods table not found (layout changed?)",
-   "checkedAt": "2026-11-21T10:58:33.085Z"
+   "checkedAt": "2026-11-21T19:13:24.379Z"
   },
   {
    "id": "hub",
@@ -3129,7 +3129,7 @@
    "url": "https://gtaglitches.com/working-glitches",
    "ok": false,
    "error": "only 0 glitches found (layout changed?)",
-   "checkedAt": "2026-11-21T10:58:33.085Z"
+   "checkedAt": "2026-11-21T19:13:24.379Z"
   }
  ],
  "ok": true,
